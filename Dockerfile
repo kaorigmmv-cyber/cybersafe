@@ -2,11 +2,8 @@ FROM eclipse-temurin:17-jdk
 
 WORKDIR /app
 
-COPY . .
-
-RUN chmod +x mvnw
-RUN ./mvnw clean package -DskipTests
+COPY target/proyecto-0.0.1-SNAPSHOT.war app.war
 
 EXPOSE 8080
 
-CMD ["java", "-jar", "target/cybersafe-0.0.1-SNAPSHOT.jar"]
+CMD ["java", "-jar", "app.war"]
