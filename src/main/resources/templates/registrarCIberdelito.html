@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head>
     <meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -114,12 +115,14 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto align-items-center">
+				<li sec:authorize="hasRole('Usuario')" class="nav-item"><a class="nav-link" href="/user/misCasosRegistrados">Mis casos registrados</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">Documentos</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Reportes</a></li>
-                <li class="nav-item"><a class="nav-link active" href="/dev/listado">Casos</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Denuncias</a></li>
-				<li class="nav-item ms-3"><a href="/dev/registrarse" class="btn btn-primary btn-sm">Registrarse</a></li>
-                <li class="nav-item ms-2"><a data-bs-toggle="modal" data-bs-target="#loginModal" class="btn btn-success btn-sm">Login</a></li>
+				<li class="nav-item"><a class="nav-link" href="/dev/estadisticas">Reportes Estadísticos</a></li>
+                <li class="nav-item"><a class="nav-link active" href="/est/listado">Casos</a></li>
+				<li class="nav-item"><a class="nav-link" href="/dev/guias">Denuncias</a></li>
+				<li sec:authorize="isAnonymous()" class="nav-item ms-3"><a href="/user/registrarse" class="btn btn-primary btn-sm">Registrarse</a></li>
+				<li sec:authorize="isAnonymous()" class="nav-item ms-2"><a href="/login" class="btn btn-success btn-sm">Login</a></li>
+				<li sec:authorize="isAuthenticated()" class="nav-item ms-2"><a href="/logout" class="btn btn-danger btn-sm">Cerrar sesión</a></li>
             </ul>
         </div>
     </div>
@@ -127,12 +130,12 @@
 
 <!-- FORMULARIO -->
 <div class="container-form">
-    <h1>Reportar Estafa Digital</h1>
+    <h1>REPORTAR ESTAFA DIGITAL</h1>
     <p class="subtitle">Completa la información del incidente y adjunta evidencias para enviarlo.</p>
 
     <form id="formEstafa" enctype="multipart/form-data">
         <label for="titulo">Título del reporte</label>
-        <input type="text" id="titulo" name="titulo" placeholder="Suplantación por WhatsApp" required>
+        <input type="text" id="titulo" name="titulo" placeholder="Ingrese un título al caso" required>
 
         <label for="modalidad" style="margin-top: 18px;">Modalidad de estafa</label>
         <select id="modalidad" name="codigoModalidad" required>
@@ -147,7 +150,7 @@
         </select>
 
         <label for="descripcion" style="margin-top: 18px;">Descripción del incidente</label>
-        <textarea id="descripcion" name="descripcion" placeholder="Escribe los detalles..." required></textarea>
+        <textarea maxlength="800" id="descripcion" name="descripcion" placeholder="Escribe los detalles..." required></textarea>
 
         <input type="file" id="imagen" name="imagen" accept="image/*" required>
 
@@ -169,11 +172,7 @@
 
     <div id="mensaje" class="alerta" style="display:none;"></div>
 </div>
-<!-- BOTÓN FLOTANTE -->
-<button id="chatToggle" class="btn btn-primary rounded-circle position-fixed"
-    style="bottom: 20px; right: 20px; width: 60px; height: 60px;">
-    <i class="bi bi-chat-dots fs-4"></i>
-</button>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
 document.getElementById("formEstafa").addEventListener("submit", function(e){
@@ -188,7 +187,7 @@ document.getElementById("formEstafa").addEventListener("submit", function(e){
     const textoOriginal = btnEnviar.innerText;
     btnEnviar.innerText = "Registrando...";
 
-    fetch("/dev/registrar", { method: "POST", body: formData })
+    fetch("/est/registrar", { method: "POST", body: formData })
     .then(response => response.text())
     .then(data => {
         mensajeDiv.innerText = data;
@@ -208,5 +207,24 @@ document.getElementById("formEstafa").addEventListener("submit", function(e){
     });
 });
 </script>
+
+<!-- CHAT BOT IA -->
+<script type="text/javascript">
+  (function(d, t) {
+      var v = d.createElement(t), s = d.getElementsByTagName(t)[0];
+      v.onload = function() {
+        window.voiceflow.chat.load({
+          verify: { projectID: '692d2b60bdd0465c265d502f' },
+          url: 'https://general-runtime.voiceflow.com/',
+          versionID: 'production',
+          voice: {
+            url: "https://runtime-api.voiceflow.com/"
+          }
+        });
+      }
+      v.src = "https://cdn.voiceflow.com/widget-next/bundle.mjs"; v.type = "text/javascript"; s.parentNode.insertBefore(v, s);
+  })(document, 'script');
+</script>
+
 </body>
 </html>

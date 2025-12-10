@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -54,13 +55,16 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto align-items-center">
+					<li sec:authorize="hasRole('Moderador')" class="nav-item"><a class="nav-link" href="/mod/revicarCasosRegistrados">Revisar casos registrados</a></li>
+					<li sec:authorize="hasRole('Usuario')" class="nav-item"><a class="nav-link" href="/user/misCasosRegistrados">Mis casos registrados</a></li>
                     <li class="nav-item"><a class="nav-link" href="#">Documentos</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Reportes</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/dev/listado">Casos</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Denuncias</a></li>
-					<li class="nav-item ms-3"><a href="/dev/registrarse" class="btn btn-primary btn-sm">Registrarse</a></li>
-					<li class="nav-item ms-2"><a data-bs-toggle="modal" data-bs-target="#loginModal" class="btn btn-success btn-sm">Login</a></li>
-                </ul>
+					<li class="nav-item"><a class="nav-link" href="/dev/estadisticas">Reportes Estadísticos</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/est/listado">Casos</a></li>
+					<li class="nav-item"><a class="nav-link" href="/dev/guias">Denuncias</a></li>
+					<li sec:authorize="isAnonymous()" class="nav-item ms-3"><a href="/user/registrarse" class="btn btn-primary btn-sm">Registrarse</a></li>
+					<li sec:authorize="isAnonymous()" class="nav-item ms-2"><a href="/login" class="btn btn-success btn-sm">Login</a></li>
+					<li sec:authorize="isAuthenticated()" class="nav-item ms-2"><a href="/logout" class="btn btn-danger btn-sm">Cerrar sesión</a></li>
+				</ul>
             </div>
         </div>
     </nav>
@@ -83,19 +87,19 @@
                 </a>
             </div>
             <div class="col-md-3">
-                <a href="#" class="btn btn-success w-100 py-4 rounded-4 shadow-sm">
+				<a href="/dev/estadisticas" class="btn btn-success w-100 py-4 rounded-4 shadow-sm">
                     <i class="bi bi-bar-chart-line fs-1"></i>
                     <div class="fw-bold mt-2">Reportes Estadísticos</div>
                 </a>
             </div>
             <div class="col-md-3">
-                <a href="/dev/listado" class="btn btn-warning w-100 py-4 rounded-4 shadow-sm">
+                <a href="/est/listado" class="btn btn-warning w-100 py-4 rounded-4 shadow-sm">
                     <i class="bi bi-people fs-1"></i>
-                    <div class="fw-bold mt-2">Consulta y registra casos</div>
+                    <div class="fw-bold mt-2">Ver reportes públicos</div>
                 </a>
             </div>
             <div class="col-md-3">
-                <a href="#" class="btn btn-danger w-100 py-4 rounded-4 shadow-sm">
+                <a href="/dev/guias" class="btn btn-danger w-100 py-4 rounded-4 shadow-sm">
                     <i class="bi bi-shield-lock fs-1"></i>
                     <div class="fw-bold mt-2">Denuncia por medios oficiales</div>
                 </a>
@@ -103,45 +107,30 @@
         </div>
     </section>
 
-    <!-- BOTÓN FLOTANTE -->
-    <button id="chatToggle" class="btn btn-primary rounded-circle position-fixed"
-        style="bottom: 20px; right: 20px; width: 60px; height: 60px;">
-        <i class="bi bi-chat-dots fs-4"></i>
-    </button>
-
     <!-- FOOTER -->
     <footer class="text-white text-center py-3 mt-5">
         <small>© 2025 Centro Virtual de Ciberdelincuencia | Todos los derechos reservados</small>
     </footer>
-	
-	<!-- Modal de Inicio de Sesión -->
-	<div class="modal fade" id="loginModal" tabindex="-1">
-	  <div class="modal-dialog modal-dialog-centered">
-	    <div class="modal-content rounded-4 shadow">
-	      <div class="modal-header border-0">
-	        <h5 class="modal-title text-primary"><i class="bi bi-person-lock"></i> Iniciar sesión</h5>
-	        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-	      </div>
-	      <div class="modal-body">
-	        <form>
-	          <div class="mb-3">
-	            <label class="form-label">Usuario</label>
-	            <input type="email" class="form-control" required>
-	          </div>
-	          <div class="mb-3">
-	            <label class="form-label">Contraseña</label>
-	            <input type="password" class="form-control" required>
-	          </div>
-	          <button type="submit" class="btn btn-primary w-100">Ingresar</button>
-	        </form>
-	      </div>
-	      <div class="modal-footer border-0 text-center">
-	        <small>¿No tienes cuenta? <a href="/dev/registrarse" class="text-primary fw-bold">Regístrate</a></small>
-	      </div>
-	    </div>
-	  </div>
-	</div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+	<!-- CHAT BOT IA -->
+	<script type="text/javascript">
+	  (function(d, t) {
+	      var v = d.createElement(t), s = d.getElementsByTagName(t)[0];
+	      v.onload = function() {
+	        window.voiceflow.chat.load({
+	          verify: { projectID: '692d2b60bdd0465c265d502f' },
+	          url: 'https://general-runtime.voiceflow.com/',
+	          versionID: 'production',
+	          voice: {
+	            url: "https://runtime-api.voiceflow.com/"
+	          }
+	        });
+	      }
+	      v.src = "https://cdn.voiceflow.com/widget-next/bundle.mjs"; v.type = "text/javascript"; s.parentNode.insertBefore(v, s);
+	  })(document, 'script');
+	</script>
+		
 </body>
 </html>
