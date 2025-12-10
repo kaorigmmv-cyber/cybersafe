@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: cybersafe
+    env: java
+    buildCommand: "./mvnw clean package -DskipTests"
+    startCommand: "java -jar target/*.jar"
+    plan: free
+    envVars:
+      - key: SPRING_DATASOURCE_URL
+        value: jdbc:mysql://34.176.172.52:3306/cybersafe?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      - key: SPRING_DATASOURCE_USERNAME
+        value: spring
+      - key: SPRING_DATASOURCE_PASSWORD
+        value: G14n171095@ss
+      - key: SERVER_PORT
+        value: "8080"
