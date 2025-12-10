@@ -8,8 +8,6 @@ RUN apt-get update && apt-get install -y maven
 
 RUN mvn clean package -DskipTests
 
-COPY target/*.war app.war
-
 EXPOSE 8080
 
-CMD ["java", "-jar", "app.war"]
+CMD ["java", "-jar", "target/proyecto-0.0.1-SNAPSHOT.war"]
