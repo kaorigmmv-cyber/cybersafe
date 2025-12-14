@@ -79,13 +79,13 @@ public class EstafaController {
 	
 	@GetMapping("/registrarCiberdelito")
 	public String registrarCiberdelito(Model model, Principal principal) {
-		
+
 	    Usuario usuario = usuServices.buscarPorCorreoUsuario(principal.getName());
 	    model.addAttribute("contador", usuario.getContadorIntentos());
-		
+
 		model.addAttribute("listadoMedio",medEstServices.listaMedioEstafas());
 		model.addAttribute("listadoModalidad",modEstServices.listaModalidadEstafas());
-	    return "registrarCiberdelito";
+	    return "registrarciberdelito";
 	}
 	
 	@PostMapping("/registrar")
