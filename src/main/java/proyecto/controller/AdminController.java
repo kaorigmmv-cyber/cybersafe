@@ -1,32 +1,14 @@
 package proyecto.controller;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
-import java.util.Base64;
-import java.util.Map;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
+import java.time.LocalDate;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.client.RestTemplate;
-import org.springframework.web.multipart.MultipartFile;
-import proyecto.entity.Estafa;
-import proyecto.entity.MedioEstafa;
-import proyecto.entity.ModalidadEstafa;
 import proyecto.services.EstafaServices;
 import proyecto.services.MedioEstafaServices;
 import proyecto.services.ModalidadEstafaServices;
@@ -49,91 +31,84 @@ public class AdminController {
 		return "index";
 	}
 	
-	@GetMapping("registrarse")
-	public String registrarse() {
-	    return "registrarse";
+	@GetMapping("guias")
+	public String denuncia() {
+		return "denuncia";
 	}
 
-	@GetMapping("registrarCiberdelito")
-	public String registrarCiberdelito(Model model) {
-		model.addAttribute("listadoMedio",medEstServices.listaMedioEstafas());
-		model.addAttribute("listadoModalidad",modEstServices.listaModalidadEstafas());
-	    return "registrarCiberdelito";
+	@GetMapping("premium")
+	public String premium() {
+		return "premium";
 	}
 	
-	@PostMapping("/registrar")
-	public ResponseEntity<String> registrar(
-	        @RequestParam("titulo") String titulo,
-	        @RequestParam("descripcion") String descripcion,
-	        @RequestParam("imagen") MultipartFile archivo,  // <--- CAMBIO IMPORTANTE
-	        @RequestParam("ciberdelincuente") String ciberdelincuente,
-	        @RequestParam("codigoMedio") int medio,
-	        @RequestParam("codigoModalidad") int modalidad
-	) {
+    // ===============================
+    // ESTADÍSTICAS (CYBERSAFE + NACIONAL)
+    // ===============================
 
-	    try {
-	    	//SUBIR IMAGEN
-	        String apiKey = "3d28d03bd2f3ba67b9febc7928ff0c6a";
+	// ===============================
+    // ESTADÍSTICAS (CYBERSAFE + NACIONAL)
+    // ===============================
 
-	        // Convertir imagen a Base64
-	        String imgBase64 = Base64.getEncoder().encodeToString(archivo.getBytes());
+    @GetMapping("estadisticas")
+    public String estadisticas(Model model) {
 
-	        // URL de ImgBB
-	        String url = "https://api.imgbb.com/1/upload?key=" + apiKey;
+        int anioActual = LocalDate.now().getYear();
 
-	        RestTemplate rest = new RestTemplate();
+        // ========== CYBERSAFE (BD) ==========
 
-	        MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
-	        body.add("image", imgBase64);
+        // Total general
+        model.addAttribute("totalEstafas", estafaServices.totalEstafas());
 
-	        HttpHeaders headers = new HttpHeaders();
-	        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+        // Gráficos básicos
+        model.addAttribute("estadisticasMedio", estafaServices.estadisticaPorMedio());
+        model.addAttribute("estadisticasModalidad", estafaServices.estadisticaPorModalidad());
 
-	        HttpEntity<MultiValueMap<String, String>> req = new HttpEntity<>(body, headers);
+        // Total del año actual
+        model.addAttribute("totalAnio", estafaServices.totalPorAnio(anioActual));
 
-	        String respuesta = rest.postForObject(url, req, String.class);
+        // Total del mes actual
+        model.addAttribute("totalMes", estafaServices.totalPorMesActual());
 
-	        ObjectMapper mapper = new ObjectMapper();
-	        Map<String, Object> jsonMap = mapper.readValue(respuesta, Map.class);
+        // Gráfico de barras por año
+        model.addAttribute("reportesPorAnio", estafaServices.reportesPorAnio());
 
-	        Map<String, Object> data = (Map<String, Object>) jsonMap.get("data");
-	        String urlImagen = data.get("url").toString();
-	        //GUARDAMOS REGISTRO
-	        Estafa obj = new Estafa();
-	        obj.setTituloCaso(titulo);
-	        obj.setDescripcionEstafa(descripcion);
-	        obj.setImagenEstafa(urlImagen);
-	        obj.setCiberdelincuente(ciberdelincuente);
+        // Gráfico de línea por meses del año actual
+        model.addAttribute("reportesPorMes", estafaServices.reportesPorMes(anioActual));
 
-	        MedioEstafa m = new MedioEstafa();
-	        m.setCodigoMedioEstafa(medio);
-	        obj.setMedioEstafa(m);
+        // Tendencia histórica año-mes
+        model.addAttribute("tendenciaHistorica", estafaServices.tendenciaHistorica());
 
-	        ModalidadEstafa mod = new ModalidadEstafa();
-	        mod.setCodigoModalidadEstafa(modalidad);
-	        obj.setModalidadEstafa(mod);
+        // Año actual
+        model.addAttribute("anioActual", anioActual);
 
-	        estafaServices.registrarEstafa(obj);
+        return "estadisticas";
+    }
 
-	        return ResponseEntity.ok("El registro se realizó correctamente");
-
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	        return ResponseEntity.status(500).body("Error al registrar la estafa");
-	    }
-	}
-
-	
-	@GetMapping("listado")
-	public String personajes(Model model) {
-		model.addAttribute("listadoEstafas", estafaServices.listarEstafa());
-		return "listadoCasos";
-	}
-	
-	@GetMapping("/estafa/{id}")
-	@ResponseBody
-	public Estafa obtenerEstafa(@PathVariable Integer id) {
-	    return estafaServices.buscarPorId(id);
-	}
+    // CYBERSAFE: datos por mes según año (AJAX)
+    @GetMapping("estadisticas/meses")
+    @ResponseBody
+    public List<Object[]> obtenerReportesPorMes(@RequestParam("anio") int anio) {
+        return estafaServices.reportesPorMes(anio);
+    }
+    
+    //EN CASO DE INGRESAR A UNA VISTA A LO QUE NO TIENE EL ROL
+    @GetMapping("/error/403")
+    public String error403() {
+        return "error/403";
+    }
+    
+    @GetMapping("/informacionTipos")
+    public String mostrarInformacionTipos() {
+        return "informacionTipos"; // El nombre del archivo sin la extensión .html
+    }
+    
+    @GetMapping("/tiposEstafa")
+    public String mostrarTiposEstafa() {
+        return "tiposEstafa"; // El nombre del archivo sin la extensión .html
+    }
+    @GetMapping("/guiasDenuncia")
+    public String mostrarguiasDenuncia() {
+        return "guiasDenuncia"; // El nombre del archivo sin la extensión .html
+    }
 
 }

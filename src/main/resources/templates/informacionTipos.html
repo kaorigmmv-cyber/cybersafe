@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Centro de Recursos y Prevención</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet"> <!-- Bootstrap Icons -->
+    <style>
+
+        /* Título principal */
+        .custom-main-title {
+            font-size: 2rem;
+            color: #00466b;
+            margin-top: 50px;
+            margin-bottom: 10px;
+        }
+
+        .custom-description {
+            font-size: 1.2rem;
+            color: #555;
+            margin-bottom: 40px;
+        }
+
+        /* Estructura de las tarjetas */
+        .custom-card {
+            border: 1px solid #00466b;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 450px; /* Asegura que todas las tarjetas tengan la misma altura */
+            text-align: center;
+            padding: 10px;
+        }
+
+        .custom-card-body {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 2rem;
+        }
+
+        .custom-card-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #00466b;
+            margin-top: 10px;
+            flex-grow: 1; /* Asegura que el título no se desborde */
+        }
+
+        .custom-card-text {
+            font-size: 1rem;
+            color: #777;
+            margin-top: 10px;
+            flex-grow: 1; /* Asegura que la descripción no se desborde */
+        }
+
+        .custom-btn {
+            background-color: #00466b;
+            color: white;
+            font-size: 1.1rem;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            margin-top: 20px;
+        }
+
+        .custom-btn:hover {
+            background-color: #ffd019;
+        }
+
+        /* Iconos */
+        .custom-icon {
+            font-size: 3rem;
+            color: #00466b;
+            margin-bottom: 20px;
+        }
+
+        /* Responsive Design */
+        .custom-card-columns {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+        }
+
+        .custom-card-columns .col-md-4 {
+            flex-basis: 30%;
+        }
+
+        @media (max-width: 768px) {
+            .custom-card-columns .col-md-4 {
+                flex-basis: 100%;
+                margin-bottom: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+	<div th:replace="~{navbar}"></div>
+    <div class="container text-center">
+        <h2 class="custom-main-title">Centro de Recursos y Prevención</h2>
+        <p class="custom-description">Información actualizada sobre ciberseguridad, prevención y actuación frente a estafas digitales.</p>
+
+        <div class="row custom-card-columns">
+            <div class="col-md-4">
+                <div class="custom-card">
+                    <div class="custom-card-body">
+                        <i class="bi bi-shield-lock custom-icon"></i> <!-- Icono de escudo -->
+                        <h5 class="custom-card-title">Tipos de modalidad de estafa</h5>
+                        <p class="custom-card-text">Aprende sobre las modalidades más comunes de estafa digital en el Perú y cómo identificarlas.</p>
+                        <a href="tiposEstafa" class="custom-btn">Ver contenido</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="custom-card">
+                    <div class="custom-card-body">
+                        <i class="bi bi-bell custom-icon"></i> <!-- Icono de campana -->
+                        <h5 class="custom-card-title">Noticias y alertas</h5>
+                        <p class="custom-card-text">Mantente informado con actualizaciones oficiales, alertas recientes y casos reales de estafa detectados en el país.</p>
+                        <a href="noticias/noticiasAlertas" class="custom-btn">Ver contenido</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="custom-card">
+                    <div class="custom-card-body">
+                        <i class="bi bi-file-earmark-text custom-icon"></i> <!-- Icono de documento -->
+                        <h5 class="custom-card-title">Guías de denuncia y actuación ciudadana</h5>
+                        <p class="custom-card-text">Pasos para denunciar una estafa digital, presentar pruebas y recibir orientación.</p>
+                        <a href="guiasDenuncia" class="custom-btn">Ver contenido</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<div th:replace="~{footer}"></div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+	<script src="/js/chatbotIA.js"></script>
+</body>
+</html>

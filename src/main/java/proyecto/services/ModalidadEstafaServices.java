@@ -17,6 +17,10 @@ public class ModalidadEstafaServices {
 	public List<ModalidadEstafa> listaModalidadEstafas(){
 		return modEstRepo.findAll();
 	}
+	
+    public ModalidadEstafa obtenerPorId(Integer id) {
+        return modEstRepo.findById(id).orElse(null);
+    }
 }
 
 

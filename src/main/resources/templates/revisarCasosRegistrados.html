@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cybersafe - Centro de Información</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+	<!-- DATA TABLES -->
+	<link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css">
+    
+	<style>
+        /* Fondo degradado del header */
+        header {
+            background: linear-gradient(135deg, #006eff, #002b7a);
+            background-size: cover;
+            background-position: center;
+            color: white;
+        }
+
+        /* Cards animadas */
+        .quick-access a {
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .quick-access a:hover {
+            transform: translateY(-5px);
+            box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Botón flotante */
+        #chatToggle {
+            box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Footer degradado */
+        footer {
+            background: linear-gradient(90deg, #000, #222);
+        }
+
+        /* Texto del header */
+        .hero-title {
+            font-size: 3rem;
+            font-weight: 800;
+        }
+		
+		/* Inputs y selects */
+		input.form-control, select.form-select {
+		    background-color: #f8f9fa;
+		    font-weight: 500;
+		    transition: all 0.3s;
+		}
+		input.form-control:focus, select.form-select:focus {
+		    box-shadow: 0 0 8px rgba(0, 123, 255, 0.3);
+		    border-color: #0d6efd;
+		}
+
+		/* Tabla */
+		#tablaMisCasos tbody tr:hover {
+		    background-color: rgba(0, 123, 255, 0.05);
+		}
+		#tablaMisCasos th, #tablaMisCasos td {
+		    vertical-align: middle;
+		}
+
+		/* Botones dentro de la tabla */
+		#tablaMisCasos .btn {
+		    border-radius: 20px;
+		    padding: 0.25rem 0.75rem;
+		    font-size: 0.85rem;
+		}
+
+		/* Cards generales */
+		.card {
+		    border: none;
+		}
+
+		/* Opcional: ajustar tamaño de scroll en la tabla */
+		.dataTables_wrapper .dataTables_scroll {
+		    overflow-x: auto;
+		}
+    </style>
+</head>
+<body class="bg-light">
+
+	<!-- NAVBAR -->
+	<div th:replace="~{navbar}"></div>
+
+	<div class="container mt-5">
+
+	    <!-- Título -->
+	    <div class="mb-4 text-center">
+	        <h2 class="fw-bold text-primary">Revisar Casos Registrados</h2>
+	    </div>
+
+	    <!-- Filtros -->
+	    <div class="card shadow-sm p-3 mb-4 rounded-4">
+	        <div class="row g-3">
+	            <div class="col-md-3">
+	                <input type="text" id="filtroTitulo" class="form-control shadow-sm rounded-pill border-primary"
+	                       placeholder="🔍 Buscar Título">
+	            </div>
+	            <div class="col-md-3">
+	                <input type="text" id="filtroDescripcion" class="form-control shadow-sm rounded-pill border-primary"
+	                       placeholder="🔍 Buscar Descripción">
+	            </div>
+	            <div class="col-md-3">
+	                <select id="filtroModalidad" class="form-select shadow-sm rounded-pill border-success">
+	                    <option value="">Todas Modalidades</option>
+	                    <th:block th:each="m : ${listadoModalidad}">
+	                        <option th:value="${m.nombreModalidadEstafa}" th:text="${m.nombreModalidadEstafa}"></option>
+	                    </th:block>
+	                </select>
+	            </div>
+	            <div class="col-md-3">
+	                <select id="filtroMedio" class="form-select shadow-sm rounded-pill border-info">
+	                    <option value="">Todos Medios</option>
+	                    <th:block th:each="m : ${listadoMedio}">
+	                        <option th:value="${m.nombreMedioEstafa}" th:text="${m.nombreMedioEstafa}"></option>
+	                    </th:block>
+	                </select>
+	            </div>
+	        </div>
+	    </div>
+
+	    <!-- Tabla -->
+	    <div class="card shadow-sm rounded-4 p-3 bg-white">
+	        <table id="tablaMisCasos" class="table table-hover table-bordered align-middle mb-0">
+	            <thead class="table-primary">
+	                <tr>
+	                    <th>Título</th>
+	                    <th>Descripción</th>
+	                    <th>Modalidad</th>
+	                    <th>Medio</th>
+	                    <th>Implicado</th>
+						<th>Estado</th>
+	                    <th>Acciones</th>
+	                </tr>
+	            </thead>
+	            <tbody></tbody>
+	        </table>
+	    </div>
+	</div>
+	
+    <!-- BOTÓN FLOTANTE -->
+    <button id="chatToggle" class="btn btn-primary rounded-circle position-fixed"
+        style="bottom: 20px; right: 20px; width: 60px; height: 60px;">
+        <i class="bi bi-chat-dots fs-4"></i>
+    </button>
+
+	<!-- MODAL PARA VER CASO -->
+	<div class="modal fade" id="modalCaso" tabindex="-1" aria-labelledby="modalCasoLabel" aria-hidden="true">
+	  <div class="modal-dialog modal-lg modal-dialog-centered">
+	    <div class="modal-content">
+	      <div class="modal-header bg-primary text-white">
+	        <h5 class="modal-title" id="modalTituloCaso">Título del Caso</h5>
+	        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+	      </div>
+	      <div class="modal-body">
+	        <div class="mb-2"><strong>Modalidad:</strong> <span id="modalModalidad"></span></div>
+	        <div class="mb-2"><strong>Medio:</strong> <span id="modalMedio"></span></div>
+	        <div class="mb-2"><strong>Descripción:</strong> <p id="modalDescripcion"></p></div>
+	        <div class="mb-2"><strong>Implicado:</strong> <span id="modalImplicado"></span></div>
+	        <div class="mb-2"><strong>Estado:</strong> <span id="modalEstado"></span></div>
+	        <div id="modalImagenContainer" class="mt-3" style="display:none;">
+	          <img id="modalImagen" src="" class="img-fluid rounded" alt="Imagen del caso">
+	        </div>
+
+			<div class="mb-3">
+			    <strong>Denuncias recibidos:</strong>
+			    <ul id="listaReportes" class="list-group mt-2"></ul>
+			</div>
+			
+	        <!-- Campo motivo de rechazo, oculto inicialmente -->
+	        <div id="motivoRechazoContainer" class="mt-3" style="display:none;">
+	          <label for="motivoRechazo" class="form-label">Motivo de BLOQUEO:</label>
+	          <textarea id="motivoRechazo" class="form-control" rows="3" placeholder="Escribe el motivo del rechazo..."></textarea>
+	          <button id="btnEnviarRechazo" class="btn btn-danger mt-2">Bloquear</button>
+	        </div>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-success" id="btnAprobar">Volver a aprobar</button>
+	        <button type="button" class="btn btn-danger" id="btnRechazar">Bloquear caso</button>
+	        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+
+	
+	<!-- JQuery -->
+	<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+	<!-- Bootstrap JS -->
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+	<!-- DataTables JS -->
+	<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+	<script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+	
+</body>
+</html>
+
+<script>
+	$(document).ready(function () {
+
+	    var table = $('#tablaMisCasos').DataTable({
+	        ajax: { url: '/mod/listarCasosParaRevisar', type: 'GET', dataSrc: '' },
+	        columns: [
+	            { data: 'titulo' },
+	            { 
+	                data: 'descripcion', 
+	                render: function(text){
+	                    if(!text) return '';
+	                    return text.length > 80 ? text.substring(0,80) + '...' : text;
+	                } 
+	            },
+	            { data: 'modalidad' },
+	            { data: 'medio' },
+	            { data: 'implicado' },
+	            {
+	                data: 'estadoEstafa',
+	                render: function(data) {
+	                    let color = '';
+	                    switch(data) {
+	                        case 'Reportado': color = 'warning'; break;
+	                        case 'Aprobado': color = 'success'; break;
+	                        case 'Bloqueado': color = 'danger'; break;
+	                        default: color = 'secondary';
+	                    }
+	                    return `<span class="badge bg-${color}">${data}</span>`;
+	                }
+	            },
+	            { 
+	                data: null, 
+	                render: function(data){
+	                    return `<button class="btn btn-primary btn-sm btn-ver-caso" data-id="${data.id}">Ver</button>`;
+	                }
+	            }
+	        ],
+	        orderCellsTop: true,
+	        fixedHeader: true,
+	        pageLength: 10,
+	        language: { url: '//cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json' }
+	    });
+
+	    // Filtrado externo
+	    $('#filtroTitulo').on('keyup change', function(){
+	        table.column(1).search(this.value).draw();
+	    });
+	    $('#filtroDescripcion').on('keyup change', function(){
+	        table.column(2).search(this.value).draw();
+	    });
+	    $('#filtroModalidad').on('change', function(){
+	        var val = $.fn.dataTable.util.escapeRegex(this.value);
+	        table.column(3).search(val ? '^'+val+'$' : '', true, false).draw();
+	    });
+	    $('#filtroMedio').on('change', function(){
+	        var val = $.fn.dataTable.util.escapeRegex(this.value);
+	        table.column(4).search(val ? '^'+val+'$' : '', true, false).draw();
+	    });
+
+	    // Abrir modal al hacer clic en el botón "Ver"
+	    const modal = new bootstrap.Modal(document.getElementById('modalCaso'));
+
+		let casoActualId = null; // guardamos el id del caso abierto
+
+		$('#tablaMisCasos').on('click', '.btn-ver-caso', function() {
+		    casoActualId = $(this).data('id');
+
+		    fetch('/est/estafa/' + casoActualId)
+		    .then(res => res.json())
+		    .then(data => {
+		        document.getElementById('modalTituloCaso').innerText = data.titulo;
+		        document.getElementById('modalModalidad').innerText = data.modalidad;
+		        document.getElementById('modalMedio').innerText = data.medio;
+		        document.getElementById('modalDescripcion').innerText = data.descripcion;
+		        document.getElementById('modalImplicado').innerText = data.implicado;
+
+		        // Estado con color
+		        const estadoSpan = document.getElementById('modalEstado');
+		        let color = '';
+		        switch(data.estado) {
+		            case 'Reportado': color = 'warning'; break;
+		            case 'Aprobado': color = 'success'; break;
+		            case 'Bloqueado': color = 'danger'; break;
+		            default: color = 'secondary';
+		        }
+		        estadoSpan.innerHTML = `<span class="badge bg-${color}">${data.estado}</span>`;
+
+		        // Imagen
+		        const imgContainer = document.getElementById('modalImagenContainer');
+		        const img = document.getElementById('modalImagen');
+		        if(data.imagen) {
+		            img.src = data.imagen;
+		            imgContainer.style.display = 'block';
+		        } else {
+		            imgContainer.style.display = 'none';
+		        }
+
+		        // Mostrar u ocultar botones según el estado
+		        if(data.estado === 'Reportado') {
+		            $('#btnAprobar').show();
+		            $('#btnRechazar').show();
+		        } else if (data.estado === 'Aprobado') {
+		            $('#btnAprobar').hide();
+		            $('#btnRechazar').show();
+				} else if (data.estado === 'Bloqueado') {
+				    $('#btnAprobar').show();
+				    $('#btnRechazar').hide();
+				}
+
+		        // Ocultar motivo de rechazo al abrir modal
+		        $('#motivoRechazoContainer').hide();
+		        $('#motivoRechazo').val('');
+
+				// LIMPIAR lista de reportes anterior
+				document.getElementById("listaReportes").innerHTML = "";
+
+				// CARGAR reportes del caso actual
+				fetch('/mod/reporte/por-estafa/' + casoActualId)
+				    .then(res => res.json())
+				    .then(reportes => {
+
+				        const lista = document.getElementById("listaReportes");
+
+				        if (reportes.length === 0) {
+				            lista.innerHTML = `<li class="list-group-item text-muted">Sin denuncias</li>`;
+				            return;
+				        }
+
+				        reportes.forEach(r => {
+				            lista.innerHTML += `
+				                <li class="list-group-item">
+				                    <strong>•</strong> ${r.motivoReporte}
+				                </li>
+				            `;
+				        });
+				    });
+				
+		        modal.show();
+		    })
+		    .catch(err => console.error(err));
+		});
+
+		// Botón Aprobar
+		$('#btnAprobar').click(function() {
+		    if(!casoActualId) return;
+
+		    fetch('/mod/reaprobarCaso/' + casoActualId, { method: 'POST' })
+		    .then(res => {
+		        if(res.ok) {
+		            modal.hide();
+		            table.ajax.reload();
+		            alert('Caso aprobado correctamente.');
+		        }
+		    })
+		    .catch(err => console.error(err));
+		});
+
+		// Botón Rechazar: mostrar textarea para el motivo
+		$('#btnRechazar').click(function() {
+		    $('#motivoRechazoContainer').toggle();
+		});
+
+		// Enviar rechazo con motivo
+		$('#btnEnviarRechazo').click(function() {
+		    const motivo = $('#motivoRechazo').val().trim();
+		    if(!motivo) {
+		        alert('Debes escribir un motivo para el rechazo.');
+		        return;
+		    }
+
+		    fetch('/mod/bloquearCaso/' + casoActualId, {
+		        method: 'POST',
+		        headers: { 'Content-Type': 'application/json' },
+		        body: JSON.stringify({ motivo })
+		    })
+		    .then(res => {
+		        if(res.ok) {
+		            modal.hide();
+		            table.ajax.reload();
+		            alert('Caso BLOQUEADO correctamente.');
+		        }
+		    })
+		    .catch(err => console.error(err));
+		});
+	});
+</script>

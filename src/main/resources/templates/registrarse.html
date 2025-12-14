@@ -1,173 +1,673 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Registro - Cybersafe</title>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-<style>
-    body {
-        background: linear-gradient(135deg, #006eff, #00bcd4);
-        min-height: 100vh;
-    }
-    .form-container {
-        max-width: 900px;
-        margin: 50px auto;
-        background: #fff;
-        padding: 30px;
-        border-radius: 15px;
-        box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-    }
-    label {
-        font-weight: 500;
-    }
-</style>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Registro - Cybersafe</title>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+	
+	<!--LINK PARA LOS CSS DEL CALENDARIO-->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+	<style>
+		label {
+			font-weight: 500;
+		}
+
+		/* Form container centrado */
+		.container-form {
+			max-width: 580px;
+			margin: 80px auto 50px;
+			/* 80px para separarlo del navbar */
+			background: white;
+			padding: 40px;
+			border-radius: 16px;
+			box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+		}
+
+		h1 {
+			font-size: 28px;
+			font-weight: 600;
+			margin-bottom: 8px;
+			text-align: center;
+			color: #222;
+		}
+
+		.subtitle {
+			text-align: center;
+			font-size: 15px;
+			color: #555;
+			margin-bottom: 35px;
+		}
+
+		input,
+		select,
+		textarea {
+			width: 100%;
+			padding: 13px;
+			border-radius: 10px;
+			border: 1px solid #ddd;
+			font-size: 14px;
+			outline: none;
+			transition: all .2s ease;
+			background: #fafafa;
+		}
+
+		input:focus,
+		select:focus,
+		textarea:focus {
+			border-color: #3aa6ff;
+			background: #fff;
+		}
+
+		textarea {
+			height: 140px;
+			resize: none;
+		}
+
+		.file-box {
+			border: 2px dashed #ced4da;
+			border-radius: 12px;
+			padding: 35px;
+			text-align: center;
+			color: #666;
+			margin-bottom: 20px;
+			font-size: 14px;
+			background: #fafafa;
+		}
+
+		.checkbox-wrapper {
+			display: flex;
+			align-items: flex-start;
+			gap: 10px;
+			margin: 12px 0;
+			font-size: 14px;
+			color: #333;
+		}
+
+		.checkbox-wrapper input {
+			width: 18px;
+			height: 18px;
+			margin-top: 2px;
+			cursor: pointer;
+		}
+
+		.checkbox-wrapper label {
+			cursor: pointer;
+			line-height: 1.3;
+		}
+
+		.submit-btn {
+			width: 100%;
+			padding: 14px;
+			background-color: #118ab2;
+			border: none;
+			border-radius: 10px;
+			color: white;
+			font-size: 17px;
+			cursor: pointer;
+			margin-top: 20px;
+			transition: background .2s ease;
+		}
+
+		.submit-btn:hover {
+			background-color: #0d6c8a;
+		}
+
+		.alerta {
+			padding: 15px 20px;
+			border-radius: 8px;
+			margin-top: 20px;
+			font-weight: 500;
+			font-size: 14px;
+		}
+
+		.alerta-exito {
+			background-color: #d4edda;
+			color: #155724;
+			border: 1px solid #c3e6cb;
+		}
+
+		.alerta-error {
+			background-color: #f8d7da;
+			color: #721c24;
+			border: 1px solid #f5c6cb;
+		}
+
+		button:disabled {
+			opacity: 0.6;
+			cursor: not-allowed;
+		}
+
+		/* Evita que el texto del botón se parta en dos líneas */
+		.btn-nowrap {
+			white-space: nowrap;
+		}
+
+		.input-codigo {
+			max-width: 180px;
+		}
+
+		.btn-long {
+			max-width: 180px;
+			/* ajustable */
+			width: 100%;
+			/* se adapta en móviles */
+		}
+
+		/* Tamaño fijo para evitar que colapse */
+		.btn-small-width {
+			width: 150px;
+			/* puedes subir a 160px o 170px si lo deseas */
+		}
+		
+		.readonly-style {
+		    background-color: #e9ecef;   /* apariencia gris suave tipo disabled */
+		    pointer-events: none;        /* bloquea clics para evitar manipulación */
+		    opacity: 1;                  /* mantiene el color normal */
+		}
+
+	</style>
 </head>
-<body>
 
-<!-- NAVBAR -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm sticky-top">
-    <div class="container">
-        <a class="navbar-brand fw-bold" href="/dev/index">🛡️ CiberSafe</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto align-items-center">
-                <li class="nav-item"><a class="nav-link" href="#">Documentos</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Reportes</a></li>
-                <li class="nav-item"><a class="nav-link" href="/dev/listado">Casos</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Denuncias</a></li>
-                <li class="nav-item ms-3"><a href="/dev/registrarse" class="btn btn-primary btn-sm">Registrarse</a></li>
-                <li class="nav-item ms-2"><a data-bs-toggle="modal" data-bs-target="#loginModal" class="btn btn-success btn-sm">Login</a></li>
-            </ul>
-        </div>
-    </div>
-</nav>
+<body class="bg-light">
 
-<!-- FORMULARIO -->
-<div class="form-container">
-    <h3 class="text-center mb-4 text-primary">
-        <i class="bi bi-person-plus"></i> Registro de usuario
-    </h3>
+	<!-- NAVBAR -->
+	<div th:replace="~{navbar}"></div>
+	
+	<!-- FORMULARIO -->
+	<div class="container-form">
+		<h1>CREAR UNA CUENTA</h1>
+		<p class="subtitle">Completa con su información para crear una cuenta.</p>
 
-    <form id="formRegistro" novalidate>
-        <div class="row">
-            <!-- COLUMNA IZQUIERDA: Datos personales -->
-            <div class="col-md-6">
-                <h6 class="text-primary mb-3">Datos personales</h6>
+		<form id="formRegistroUsuario" action="/user/registrar" method="POST">
 
-                <div class="mb-3">
-                    <label class="form-label">Nombres</label>
-                    <input type="text" class="form-control" id="nombres" required>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Apellidos</label>
-                    <input type="text" class="form-control" id="apellidos" required>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Celular</label>
-                    <input type="tel" class="form-control" id="celular" pattern="[0-9]{9}" maxlength="9" placeholder="Ejemplo: 987654321" required>
-                    <div class="invalid-feedback">Ingrese un número de 9 dígitos.</div>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Correo electrónico</label>
-                    <input type="email" class="form-control" id="correo" placeholder="correo@ejemplo.com" required>
-                    <div class="invalid-feedback">Ingrese un correo válido.</div>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Fecha de nacimiento</label>
-                    <input type="date" class="form-control" id="fechaNacimiento" required>
-                </div>
-            </div>
 
-            <!-- COLUMNA DERECHA: Datos de usuario -->
-            <div class="col-md-6">
-                <h6 class="text-primary mb-3">Datos de usuario</h6>
+			<label class="form-label">Ingresar datos completos y correctos como en el DNI para validar.</label>
+			<div class="mb-3">
+				<input type="text" id="nombres" name="nombres" 
+				class="form-control primera-parte" placeholder="NOMBRES COMPLETOS" required>
+				<div class="invalid-feedback">Debe ingresar sus nombres.</div>
+			</div>
+			<div class="mb-3">
+			    <div class="row g-2">
+			        <div class="col-md-6">
+			            <input type="text" id="apellidoPaterno" name="apellidoPaterno" 
+						class="form-control primera-parte" placeholder="APELLIDO PATERNO" required>
+						<div class="invalid-feedback">Debe ingresar su apellido paterno.</div>
+					</div>
+			        <div class="col-md-6">
+			            <input type="text" id="apellidoMaterno" name="apellidoMaterno" 
+						class="form-control primera-parte" placeholder="APELLIDO MATERNO" required>
+						<div class="invalid-feedback">Debe ingresar su apellido materno.</div>
+					</div>
+			    </div>
+			</div>
 
-                <div class="mb-3">
-                    <label class="form-label">Nombre de usuario</label>
-                    <input type="text" class="form-control" id="nombreUsuario" required>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Contraseña</label>
-                    <input type="password" class="form-control" id="contrasena"
-                           minlength="8" pattern="(?=.*[A-Z])(?=.*[a-z])(?=.*\\d).{8,}" 
-                           placeholder="Mínimo 8 caracteres, con mayúsculas y números" required>
-                    <div class="invalid-feedback">
-                        La contraseña debe tener al menos 8 caracteres, una mayúscula y un número.
-                    </div>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Nickname</label>
-                    <input type="text" class="form-control" id="nickname" required>
-                </div>
+			<div class="mb-3">
+			    <div class="row g-2">
+			        <div class="col-md-8">
+			            <input type="text" id="dni" name="dni" 
+						class="form-control primera-parte" placeholder="INGRESE DNI" required>
+						<div class="invalid-feedback">El DNI debe tener 8 dígitos numéricos.</div>
+			        </div>
+			        <div class="col-md-4">		            
+						<input type="text" id="digitoVerificador" name="digitoVerificador" 
+						class="form-control primera-parte" placeholder="DÍG. VERIF." required>
+						<div class="invalid-feedback">Debe ingresar 1 dígito.</div>
+					</div>
+			    </div>
+			</div>
+			<div class="mb-3">
+				<div class="d-flex gap-2">
+					<button id="btnBusquedaDni" type="button" class="btn btn-primary w-100">VALIDAR DNI</button>
+				</div>
+			</div>
+			<div id="mensajeExito" class="alert alert-success d-none">
+			</div>
+			<hr>
+			<div class="mb-3">
+				<label for="fechaNacimiento" class="form-label">FECHA DE NACIMIENTO</label>
+				<input type="date" id="fechaNacimiento" name="fechaNacimiento" class="form-control segunda-parte" disabled required>
+			</div>
+			<div class="mb-3">
+				<label for="correoElectronico" class="form-label">CORREO ELECTRÓNICO</label>
+				<input type="text" id="correoElectronico" name="correoElectronico" class="form-control segunda-parte"
+					placeholder="Ingrese su correo electrónico" disabled required>
+				<div class="invalid-feedback">Debe ingresar un correo válido.</div>
+			</div>
+			<div class="mb-3">
+				<label for="password" class="form-label">CONTRASEÑA</label>
+				<input type="password" id="password" name="password" class="form-control segunda-parte"
+					placeholder="Ingrese contraseña" disabled required>
+				<div class="invalid-feedback">La contraseña debe tener mínimo 8 caracteres, entre mayúsculas, minúsculas y números</div>
+			</div>
+			<div class="mb-3">
+				<label for="nickname" class="form-label">NICKNAME</label>
+				<input type="text" id="nickname" name="nickname" class="form-control segunda-parte" 
+				placeholder="Ingrese nickname" disabled required>
+				<div class="invalid-feedback">El nickname debe tener entre 4 y 16 caracteres, solo letras, números o _.</div>
+			</div>
+			<hr>
+			<div class="checkbox-wrapper">
+			    <input type="checkbox" id="terminos" name="terminos" required>
+			    <label for="terminos">
+			        Acepto los 
+			        <a href="#" data-bs-toggle="modal" data-bs-target="#modalTerminos">
+			            términos y condiciones
+			        </a>
+			        del uso de la plataforma
+			    </label>
+			</div>
 
-                <button type="submit" class="btn btn-primary w-100 mt-4">
-                    <i class="bi bi-check-circle"></i> Registrar
-                </button>
-            </div>
-        </div>
-    </form>
+			<button disabled class="submit-btn segunda-parte" type="submit" id="btnRegistrar">REGISTRARSE</button>
+		</form>
+		<div id="mensajeExitoForm" class="alert alert-success d-none"></div>
+	</div>
 
-    <div class="text-center mt-3">
-        <a href="/dev/index" class="btn btn-outline-secondary w-100 mb-2">
-            <i class="bi bi-arrow-left"></i> Volver al inicio
-        </a>
-        <small>¿Ya tienes cuenta? 
-            <a href="#login" class="text-decoration-none text-primary fw-bold" data-bs-toggle="modal" data-bs-target="#loginModal">Inicia sesión</a>
-        </small>
-    </div>
-</div>
+	<!-- BOTÓN FLOTANTE -->
+	<button id="chatToggle" class="btn btn-primary rounded-circle position-fixed"
+		style="bottom: 20px; right: 20px; width: 60px; height: 60px;">
+		<i class="bi bi-chat-dots fs-4"></i>
+	</button>
 
-<!-- BOTÓN FLOTANTE -->
-<button id="chatToggle" class="btn btn-primary rounded-circle position-fixed"
-    style="bottom: 20px; right: 20px; width: 60px; height: 60px;">
-    <i class="bi bi-chat-dots fs-4"></i>
-</button>
+	<div class="modal fade" id="modalTerminos" tabindex="-1">
+	    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+	        <div class="modal-content">
 
-<!-- Modal de Inicio de Sesión -->
-<div class="modal fade" id="loginModal" tabindex="-1">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content rounded-4 shadow">
-      <div class="modal-header border-0">
-        <h5 class="modal-title text-primary"><i class="bi bi-person-lock"></i> Iniciar sesión</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-      </div>
-      <div class="modal-body">
-        <form>
-          <div class="mb-3">
-            <label class="form-label">Usuario</label>
-            <input type="email" class="form-control" required>
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Contraseña</label>
-            <input type="password" class="form-control" required>
-          </div>
-          <button type="submit" class="btn btn-primary w-100">Ingresar</button>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
+	            <div class="modal-header bg-dark text-white">
+	                <h5 class="modal-title">Reglas y Términos de Uso – CyberSafe Perú</h5>
+	                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+	            </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-    // Validación Bootstrap
-    (function () {
-        'use strict'
-        const form = document.querySelector('#formRegistro')
-        form.addEventListener('submit', function (event) {
-            if (!form.checkValidity()) {
-                event.preventDefault()
-                event.stopPropagation()
-            } else {
-                alert('Formulario válido. Se enviará el correo de confirmación.')
-            }
-            form.classList.add('was-validated')
-        }, false)
-    })()
-</script>
+	            <div class="modal-body">
+	                <p><strong>1. Uso adecuado de la plataforma</strong></p>
+	                <p>
+	                    El usuario se compromete a utilizar la plataforma CyberSafe Perú únicamente con fines 
+						informativos, preventivos y de reporte de posibles delitos informáticos, absteniéndose de 
+						realizar usos malintencionados o fraudulentos.                </p>
+	                <p><strong>2. Veracidad de la información</strong></p>
+	                <p>
+						El usuario declara que la información ingresada en formularios, reportes y evidencias 
+						es verídica, completa y proporcionada de buena fe. CyberSafe Perú no se responsabiliza 
+						por información falsa o incompleta ingresada por terceros.
+	                </p>
+	                <p><strong>3. Responsabilidad del usuario</strong></p>
+	                <p>
+	                    El usuario es responsable del contenido que registra en la plataforma, incluyendo textos, 
+						imágenes, archivos o cualquier otro tipo de evidencia digital adjunta.
+	                </p>
+
+	                <p><strong>4. Tratamiento de datos personales</strong></p>
+	                <p>
+	                    La información proporcionada será utilizada únicamente para fines de análisis, orientación, 
+						generación de estadísticas y, cuando el usuario lo autorice, para la derivación del caso a 
+						entidades competentes, respetando la confidencialidad y la normativa vigente sobre 
+						protección de datos personales.
+	                </p>
+	                <p><strong>5. Anonimización de reportes públicos</strong></p>
+	                <p>
+						Los reportes que se muestren en módulos públicos o estadísticos serán anonimizados, 
+						evitando la exposición de datos personales que permitan identificar al usuario.
+	                </p>
+					<p><strong>6. Limitación de responsabilidad</strong></p>
+					<p>
+						CyberSafe Perú es una plataforma de apoyo, orientación y registro ciudadano. No sustituye 
+						las funciones legales de las autoridades competentes ni garantiza la resolución de los 
+						casos reportados.
+					</p>
+					<p><strong>7. Uso de contenidos</strong></p>
+					<p>
+						Los contenidos informativos, guías y materiales educativos disponibles en la plataforma 
+						son de uso referencial y no constituyen asesoría legal oficial.
+					</p>
+					<p><strong>8. Disponibilidad del servicio</strong></p>
+					<p>
+						La plataforma puede presentar interrupciones temporales por mantenimiento, mejoras o 
+						causas técnicas, sin que ello genere responsabilidad para los administradores del sistema.
+					</p>
+					<p><strong>9. Modificación de términos</strong></p>
+					<p>
+						CyberSafe Perú se reserva el derecho de modificar los Términos y Condiciones en cualquier 
+						momento. Las modificaciones serán comunicadas a través de la plataforma.
+					</p>
+					<p><strong>10. Envío a la DIVINDAT</strong></p>
+					<p>
+						De marcar el envio de mi caso a la DINVINDAT, autorizo el envío de la información registrada, 
+						incluyendo las evidencias adjuntas, a la División de Investigación de Delitos de Alta 
+						Tecnología (DIVINDAT). Entiendo que CyberSafe Perú actúa únicamente como plataforma de apoyo 
+						y no garantiza la atención ni resolución del caso por parte de dicha entidad.
+						Declaro que la información proporcionada es verídica y autorizo expresamente a CyberSafe Perú 
+						a remitir este reporte, junto con las evidencias adjuntas, a la División de Investigación de 
+						Delitos de Alta Tecnología (DIVINDAT) de la Policía Nacional del Perú. Entiendo que CyberSafe 
+						Perú no sustituye los canales oficiales de denuncia ni garantiza la atención del caso.
+					</p>
+	            </div>
+
+	            <div class="modal-footer">
+	                <button class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+	            </div>
+
+	        </div>
+	    </div>
+	</div>
+
+	<!-- MODAL ERROR -->
+	<div class="modal fade" id="modalError" tabindex="-1">
+	  <div class="modal-dialog">
+	    <div class="modal-content border-danger">
+	      <div class="modal-header bg-danger text-white">
+	        <h5 class="modal-title">Error de validación</h5>
+	        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+	      </div>
+	      <div class="modal-body" id="mensajeError">
+	        Los datos ingresados no coinciden con los datos oficiales del DNI.
+	      </div>
+	      <div class="modal-footer">
+	        <button class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+	<!--SCRIPT PARA EL CAMPO FECHA-->
+	<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+	<script>
+	//script para cambiar el calendario de fecha
+		flatpickr("#fechaNacimiento", {
+		    dateFormat: "Y-m-d",
+		    maxDate: "today",
+		    defaultDate: "2007-01-01",
+		    disableMobile: true
+		});
+	</script>
+	<script>
+		const fechaInput = document.getElementById("fechaNacimiento");
+
+		// obtener fecha de hoy en formato yyyy-mm-dd
+		const hoy = new Date().toISOString().split("T")[0];
+
+		// bloquear fechas posteriores
+		fechaInput.max = hoy;
+	</script>
+	<script>
+		//obtenemos los elementos
+		let nombreForm = document.getElementById("nombres");
+		let apellidoPaternoForm = document.getElementById("apellidoPaterno");
+		let apellidoMaternoForm = document.getElementById("apellidoMaterno");
+		let dniForm = document.getElementById("dni");
+		let digitoVerificadorForm = document.getElementById("digitoVerificador");	
+		
+		let botonBusquedaDni = document.getElementById("btnBusquedaDni");
+		botonBusquedaDni.addEventListener("click", validarFormulario);
+		
+		function validarFormulario() {
+		    let valido = true;
+
+		    // Validar nombres (solo letras y mínimo 2 caracteres)
+		    if (!/^[A-Za-zÁÉÍÓÚÑáéíóúñ ]{2,}$/.test(nombreForm.value.trim())) {
+		        marcarInvalido(nombreForm);
+		        valido = false;
+		    } else {
+		        marcarValido(nombreForm);
+		    }
+
+		    // Validar apellido paterno
+		    if (!/^[A-Za-zÁÉÍÓÚÑáéíóúñ ]{2,}$/.test(apellidoPaternoForm.value.trim())) {
+		        marcarInvalido(apellidoPaternoForm);
+		        valido = false;
+		    } else {
+		        marcarValido(apellidoPaternoForm);
+		    }
+
+		    // Validar apellido materno
+		    if (!/^[A-Za-zÁÉÍÓÚÑáéíóúñ ]{2,}$/.test(apellidoMaternoForm.value.trim())) {
+		        marcarInvalido(apellidoMaternoForm);
+		        valido = false;
+		    } else {
+		        marcarValido(apellidoMaternoForm);
+		    }
+
+		    // Validar DNI (8 dígitos)
+		    if (!/^\d{8}$/.test(dniForm.value.trim())) {
+		        marcarInvalido(dniForm);
+		        valido = false;
+		    } else {
+		        marcarValido(dniForm);
+		    }
+
+		    // Validar dígito verificador (1 dígito)
+		    if (!/^\d{1}$/.test(digitoVerificadorForm.value.trim())) {
+		        marcarInvalido(digitoVerificadorForm);
+		        valido = false;
+		    } else {
+		        marcarValido(digitoVerificadorForm);
+		    }
+
+		    // Si algo está mal → detener
+		    if (!valido) return;
+
+		    // Si todo está correcto → llamar API
+			// enviamos el valor del dni a la función
+			obtenerDatos(dniForm.value.trim());
+		}
+
+
+		// Utilidades
+		function marcarInvalido(campo) {
+		    campo.classList.add("is-invalid");
+		    campo.classList.remove("is-valid");
+		}
+
+		function marcarValido(campo) {
+		    campo.classList.remove("is-invalid");
+		    campo.classList.add("is-valid");
+		}
+				
+		function obtenerDatos(dniIngresado) {
+
+		    // 1️⃣ Validar si el DNI ya está registrado
+		    fetch(`/user/validarDni?dni=${dniIngresado}`)
+		        .then(res => res.json())
+		        .then(disponible => {
+		            if (!disponible) {
+		                mostrarError("Este DNI ya está registrado.");
+		                return; // Detiene el resto de la función
+		            }
+
+		            // 2️⃣ Consultar API externa solo si el DNI no existe
+		            return fetch("https://apiperu.dev/api/dni/" + dniIngresado 
+		                + "?api_token=bbdef8f53da81a029eb1e342d0e4b447df6781cd8f7e1370032f3faeede79b7f")
+		        })
+		        .then(res => res ? res.json() : null)
+		        .then(datos => {
+		            if (!datos) return; // Si ya se detuvo, no continuar
+
+		            if (!datos.success) {
+		                marcarInvalido(dniForm);
+		                mostrarError("No se encontró información para el DNI ingresado.");
+		                return;
+		            }
+
+		            let info = datos.data;
+
+		            let nombreAPI = info.nombres.trim().toUpperCase();
+		            let paternoAPI = info.apellido_paterno.trim().toUpperCase();
+		            let maternoAPI = info.apellido_materno.trim().toUpperCase();
+		            let veriAPI = info.codigo_verificacion;
+
+		            let nombreUser = nombreForm.value.trim().toUpperCase();
+		            let paternoUser = apellidoPaternoForm.value.trim().toUpperCase();
+		            let maternoUser = apellidoMaternoForm.value.trim().toUpperCase();
+		            let verificadorUser = digitoVerificadorForm.value;
+
+		            if (nombreUser !== nombreAPI) return mostrarError("El nombre no coincide con el DNI ingresado.");
+		            if (paternoUser !== paternoAPI) return mostrarError("El apellido paterno no coincide con el DNI ingresado.");
+		            if (maternoUser !== maternoAPI) return mostrarError("El apellido materno no coincide con el DNI ingresado.");
+		            if (verificadorUser != veriAPI) return mostrarError("El dígito verificador no coincide con el DNI ingresado.");
+
+		            // Todo correcto
+		            mostrarExito();
+		            activarSegundaParte();
+		            bloquearPrimeraParte();
+		            deshabilitarBotonDni();
+		        });
+		}
+
+		
+		function deshabilitarBotonDni() {
+		    const btn = document.getElementById("btnBusquedaDni");
+		    btn.disabled = true;                 // deshabilita
+		    btn.innerText = "VALIDADO ✔";        // texto opcional
+		    btn.classList.add("btn-success");    // opcional: cambia color
+		}
+		
+		function bloquearPrimeraParte() {
+		    // Selecciona todos los elementos con esa clase
+		    const inputs = document.querySelectorAll(".primera-parte");
+
+		    inputs.forEach(input => {
+		        input.readOnly = true;               // evita edición
+		        input.classList.add("readonly-style"); // efecto visual
+		    });
+		}
+		
+		function mostrarError(mensaje) {
+		    document.getElementById("mensajeError").innerText = mensaje;
+		    let modal = new bootstrap.Modal(document.getElementById('modalError'));
+		    modal.show();
+		}
+
+		function mostrarExito() {
+		    let msg = document.getElementById("mensajeExito");
+		    msg.classList.remove("d-none");
+		    msg.innerText = "Datos verificados correctamente.";
+		}
+		
+		function mostrarExitoForm() {
+		    let msg = document.getElementById("mensajeExitoForm");
+		    msg.classList.remove("d-none");
+		    msg.innerText = "REGISTRADO";
+		}
+		
+		function activarSegundaParte() {
+		    document.querySelectorAll(".segunda-parte").forEach(c => {
+		        c.removeAttribute("disabled");
+		    });
+		}
+		
+		function validarCorreoUnico() {
+		    const correo = emailForm.value.trim();
+		    if (!correo) return false;
+
+		    return fetch(`/user/validarCorreo?correo=${encodeURIComponent(correo)}`)
+		        .then(res => res.json())
+		        .then(disponible => {
+		            if (!disponible) {  // Si NO está disponible
+		                mostrarError("Este correo ya está registrado.");
+		                marcarInvalido(emailForm);
+		                return false;    // detiene el registro
+		            } else {
+		                marcarValido(emailForm);
+		                return true;
+		            }
+		        });
+		}
+		
+		//validacion de la segunda parte del formulario
+				
+		let emailForm = document.getElementById("correoElectronico");
+		let passwordForm = document.getElementById("password");
+		let nicknameForm = document.getElementById("nickname");
+		let fechaForm = document.getElementById("fechaNacimiento");
+		let btnRegistrar = document.getElementById("btnRegistrar");
+
+		function validarCorreo() {
+		    const correo = emailForm.value.trim();
+		    const regexCorreo = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+		    if (!regexCorreo.test(correo)) {
+		        marcarInvalido(correoElectronico);
+		        return false;
+		    }
+
+		    marcarValido(correoElectronico);
+		    return true;
+		}
+		
+
+		function validarPassword() {
+		    const pass = passwordForm.value.trim();
+		    const regexPass = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
+
+		    if (!regexPass.test(pass)) {
+		        marcarInvalido(password);
+		        return false;
+		    }
+
+		    marcarValido(password);
+		    return true;
+		}
+		
+		function validarNickname() {
+		    const nick = nicknameForm.value.trim();
+		    const regexNick = /^[a-zA-Z0-9_-]{4,20}$/;
+
+		    if (!regexNick.test(nick)) {
+		        marcarInvalido(nickname);
+		        return false;
+		    }
+
+		    marcarValido(nickname);
+		    return true;
+		}
+
+		function validarFecha() {
+		    const fecha = fechaForm.value;
+		    const hoy = new Date().toISOString().split("T")[0];
+
+		    if (!fecha || fecha > hoy) {
+		        marcarInvalido(fechaNacimiento);
+		        return false;
+		    }
+
+		    marcarValido(fechaNacimiento);
+		    return true;
+		}
+		
+		btnRegistrar.addEventListener("click", validarRegistro);
+
+		async function validarRegistro(e) {
+		    e.preventDefault(); // evita envío automático
+
+		    let valido = true;
+
+		    if (!validarCorreo()) valido = false;
+		    if (!validarPassword()) valido = false;
+		    if (!validarNickname()) valido = false;
+		    if (!validarFecha()) valido = false;
+
+			const correoValido = await validarCorreoUnico();
+			if (!correoValido) valido = false;
+			
+		    // SI ALGO ESTÁ MAL → detener
+		    if (!valido) return;
+
+			
+			console.log (valido)
+			
+		    // TODO OK → registrar
+		    mostrarExitoForm();
+		    // aquí envías el formulario o haces lo que necesites
+			
+			document.getElementById("formRegistroUsuario").submit();
+		}
+
+	</script>
 </body>
+
 </html>

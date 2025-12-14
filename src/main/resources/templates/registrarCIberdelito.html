@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head>
     <meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -88,7 +89,6 @@
             transition: background .2s ease;
         }
         .submit-btn:hover { background-color: #0d6c8a; }
-
         .alerta {
             padding: 15px 20px;
             border-radius: 8px;
@@ -105,34 +105,17 @@
 </head>
 <body class="bg-light">
 
-<!-- NAVBAR -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm sticky-top">
-    <div class="container">
-        <a class="navbar-brand fw-bold" href="/dev/index">🛡️ CiberSafe</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto align-items-center">
-                <li class="nav-item"><a class="nav-link" href="#">Documentos</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Reportes</a></li>
-                <li class="nav-item"><a class="nav-link active" href="/dev/listado">Casos</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Denuncias</a></li>
-				<li class="nav-item ms-3"><a href="/dev/registrarse" class="btn btn-primary btn-sm">Registrarse</a></li>
-                <li class="nav-item ms-2"><a data-bs-toggle="modal" data-bs-target="#loginModal" class="btn btn-success btn-sm">Login</a></li>
-            </ul>
-        </div>
-    </div>
-</nav>
+	<!-- NAVBAR -->
+	<div th:replace="~{navbar}"></div>
 
 <!-- FORMULARIO -->
 <div class="container-form">
-    <h1>Reportar Estafa Digital</h1>
+    <h1>REPORTAR ESTAFA DIGITAL</h1>
     <p class="subtitle">Completa la información del incidente y adjunta evidencias para enviarlo.</p>
 
     <form id="formEstafa" enctype="multipart/form-data">
         <label for="titulo">Título del reporte</label>
-        <input type="text" id="titulo" name="titulo" placeholder="Suplantación por WhatsApp" required>
+        <input type="text" id="titulo" name="titulo" placeholder="Ingrese un título al caso" required>
 
         <label for="modalidad" style="margin-top: 18px;">Modalidad de estafa</label>
         <select id="modalidad" name="codigoModalidad" required>
@@ -147,33 +130,131 @@
         </select>
 
         <label for="descripcion" style="margin-top: 18px;">Descripción del incidente</label>
-        <textarea id="descripcion" name="descripcion" placeholder="Escribe los detalles..." required></textarea>
+        <textarea maxlength="800" id="descripcion" name="descripcion" placeholder="Escribe los detalles..." required></textarea>
 
         <input type="file" id="imagen" name="imagen" accept="image/*" required>
 
         <label for="ciberdelincuente" style="margin-top: 18px;">Presunto implicado</label>
         <input id="ciberdelincuente" name="ciberdelincuente" placeholder="Escribe los detalles..." required>
 
-        <div class="checkbox-wrapper">
-            <input type="checkbox" id="terminos" name="terminos" required>
-            <label for="terminos">Acepto los términos y condiciones del uso de la plataforma</label>
-        </div>
+		<div class="checkbox-wrapper">
+		    <input type="checkbox" id="terminos" name="terminos" required>
+		    <label for="terminos">
+		        Acepto los 
+		        <a href="#" data-bs-toggle="modal" data-bs-target="#modalTerminos">
+		            términos y condiciones
+		        </a>
+		        del uso de la plataforma
+		    </label>
+		</div>
 
-        <div class="checkbox-wrapper">
-            <input type="checkbox" id="formal" name="formal">
-            <label for="formal">Enviar denuncia formal a la DIVINDAT</label>
-        </div>
+		<div class="d-flex align-items-center gap-3">
+
+		    <!-- CHECKBOX -->
+		    <div class="checkbox-wrapper">
+		        <input type="checkbox" id="formal" name="formal" th:disabled="${contador == 0}">
+		        <label for="formal" class="ms-1">Enviar denuncia formal a la DIVINDAT</label>
+		    </div>
+
+		    <!-- BOTÓN “MEJORAR A PREMIUM” -->
+		    <a sec:authorize="!hasAnyRole('Premium')"
+		            th:if="${contador == 0}"
+		            type="button"
+		            class="btn btn-warning btn-sm fw-bold"
+		            href="/dev/premium">
+		        ⭐ Mejorar Premium o Renueva
+		    </a>
+
+		</div>
 
         <button class="submit-btn" type="submit" id="btnEnviar">Enviar Reporte</button>
     </form>
 
     <div id="mensaje" class="alerta" style="display:none;"></div>
 </div>
-<!-- BOTÓN FLOTANTE -->
-<button id="chatToggle" class="btn btn-primary rounded-circle position-fixed"
-    style="bottom: 20px; right: 20px; width: 60px; height: 60px;">
-    <i class="bi bi-chat-dots fs-4"></i>
-</button>
+
+<div class="modal fade" id="modalTerminos" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+
+            <div class="modal-header bg-dark text-white">
+                <h5 class="modal-title">Reglas y Términos de Uso – CyberSafe Perú</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+                <p><strong>1. Uso adecuado de la plataforma</strong></p>
+                <p>
+                    El usuario se compromete a utilizar la plataforma CyberSafe Perú únicamente con fines 
+					informativos, preventivos y de reporte de posibles delitos informáticos, absteniéndose de 
+					realizar usos malintencionados o fraudulentos.                </p>
+                <p><strong>2. Veracidad de la información</strong></p>
+                <p>
+					El usuario declara que la información ingresada en formularios, reportes y evidencias 
+					es verídica, completa y proporcionada de buena fe. CyberSafe Perú no se responsabiliza 
+					por información falsa o incompleta ingresada por terceros.
+                </p>
+                <p><strong>3. Responsabilidad del usuario</strong></p>
+                <p>
+                    El usuario es responsable del contenido que registra en la plataforma, incluyendo textos, 
+					imágenes, archivos o cualquier otro tipo de evidencia digital adjunta.
+                </p>
+
+                <p><strong>4. Tratamiento de datos personales</strong></p>
+                <p>
+                    La información proporcionada será utilizada únicamente para fines de análisis, orientación, 
+					generación de estadísticas y, cuando el usuario lo autorice, para la derivación del caso a 
+					entidades competentes, respetando la confidencialidad y la normativa vigente sobre 
+					protección de datos personales.
+                </p>
+                <p><strong>5. Anonimización de reportes públicos</strong></p>
+                <p>
+					Los reportes que se muestren en módulos públicos o estadísticos serán anonimizados, 
+					evitando la exposición de datos personales que permitan identificar al usuario.
+                </p>
+				<p><strong>6. Limitación de responsabilidad</strong></p>
+				<p>
+					CyberSafe Perú es una plataforma de apoyo, orientación y registro ciudadano. No sustituye 
+					las funciones legales de las autoridades competentes ni garantiza la resolución de los 
+					casos reportados.
+				</p>
+				<p><strong>7. Uso de contenidos</strong></p>
+				<p>
+					Los contenidos informativos, guías y materiales educativos disponibles en la plataforma 
+					son de uso referencial y no constituyen asesoría legal oficial.
+				</p>
+				<p><strong>8. Disponibilidad del servicio</strong></p>
+				<p>
+					La plataforma puede presentar interrupciones temporales por mantenimiento, mejoras o 
+					causas técnicas, sin que ello genere responsabilidad para los administradores del sistema.
+				</p>
+				<p><strong>9. Modificación de términos</strong></p>
+				<p>
+					CyberSafe Perú se reserva el derecho de modificar los Términos y Condiciones en cualquier 
+					momento. Las modificaciones serán comunicadas a través de la plataforma.
+				</p>
+				<p><strong>10. Envío a la DIVINDAT</strong></p>
+				<p>
+					De marcar el envio de mi caso a la DINVINDAT, autorizo el envío de la información registrada, 
+					incluyendo las evidencias adjuntas, a la División de Investigación de Delitos de Alta 
+					Tecnología (DIVINDAT). Entiendo que CyberSafe Perú actúa únicamente como plataforma de apoyo 
+					y no garantiza la atención ni resolución del caso por parte de dicha entidad.
+					Declaro que la información proporcionada es verídica y autorizo expresamente a CyberSafe Perú 
+					a remitir este reporte, junto con las evidencias adjuntas, a la División de Investigación de 
+					Delitos de Alta Tecnología (DIVINDAT) de la Policía Nacional del Perú. Entiendo que CyberSafe 
+					Perú no sustituye los canales oficiales de denuncia ni garantiza la atención del caso.
+				</p>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
 document.getElementById("formEstafa").addEventListener("submit", function(e){
@@ -188,7 +269,7 @@ document.getElementById("formEstafa").addEventListener("submit", function(e){
     const textoOriginal = btnEnviar.innerText;
     btnEnviar.innerText = "Registrando...";
 
-    fetch("/dev/registrar", { method: "POST", body: formData })
+    fetch("/est/registrar", { method: "POST", body: formData })
     .then(response => response.text())
     .then(data => {
         mensajeDiv.innerText = data;
@@ -207,6 +288,23 @@ document.getElementById("formEstafa").addEventListener("submit", function(e){
         btnEnviar.innerText = textoOriginal;
     });
 });
+</script>
+<!-- CHAT BOT IA -->
+<script type="text/javascript">
+  (function(d, t) {
+      var v = d.createElement(t), s = d.getElementsByTagName(t)[0];
+      v.onload = function() {
+        window.voiceflow.chat.load({
+          verify: { projectID: '692d2b60bdd0465c265d502f' },
+          url: 'https://general-runtime.voiceflow.com/',
+          versionID: 'production',
+          voice: {
+            url: "https://runtime-api.voiceflow.com/"
+          }
+        });
+      }
+      v.src = "https://cdn.voiceflow.com/widget-next/bundle.mjs"; v.type = "text/javascript"; s.parentNode.insertBefore(v, s);
+  })(document, 'script');
 </script>
 </body>
 </html>

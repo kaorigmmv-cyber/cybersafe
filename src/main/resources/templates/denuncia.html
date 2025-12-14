@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Guía de Ciberdelitos en Perú</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        h1, h2 {
+            scroll-margin-top: 80px;
+        }
+
+        .section-card {
+            background: #fff;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+        }
+
+        .accordion-button:not(.collapsed) {
+            background-color: #0d6efd;
+            color: white;
+        }
+
+        .list-group-item {
+            border-radius: 10px !important;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+        }
+    </style>
+</head>
+
+<body class="bg-light">
+
+	<!-- NAVBAR -->
+	<div th:replace="~{navbar}"></div>
+
+    <!-- CONTENIDO -->
+    <div class="container py-5">
+
+        <!-- TÍTULO -->
+        <h1 class="text-center fw-bold mb-5">Guía Completa sobre Ciberdelitos en Perú</h1>
+
+        <!-- 1. FORMAS DE DENUNCIAR -->
+        <section class="mb-5 section-card">
+            <h2 class="fw-bold mb-3">1. Formas de denunciar un ciberdelito en Perú</h2>
+            <p>La División de Investigación de Delitos de Alta Tecnología (DIVINDAT) es la unidad especializada de la PNP.</p>
+
+            <div class="row mt-4">
+                <!-- Presencial -->
+                <div class="col-md-6 mb-3">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-body">
+                            <h5 class="fw-bold">Presencial</h5>
+                            <ul>
+                                <li>Av. España 323, piso 9 – DIRINCRI, Cercado de Lima</li>
+                                <li>Comisaría más cercana, llevando:
+                                    <ul>
+                                        <li>DNI</li>
+                                        <li>Capturas de pantalla</li>
+                                        <li>Correos, chats, enlaces, números de cuenta, etc.</li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Virtual -->
+                <div class="col-md-6 mb-3">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-body">
+                            <h5 class="fw-bold">Virtual</h5>
+                            <ul>
+                                <li>Correo: <strong>divindat.mesadepartes@policia.gob.pe</strong></li>
+                                <li>Teléfonos:
+                                    <ul>
+                                        <li>CENTRAL DIVINDAT: (01) 431-8898</li>
+                                        <li>MININTER – Línea Única: 1818</li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- 2. TIPOS DE CIBERDELITOS -->
+        <section class="mb-5 section-card">
+            <h2 class="fw-bold mb-4">2. Tipos de Ciberdelitos y Descripciones</h2>
+
+            <div class="accordion" id="delitosAccordion">
+
+                <!-- Delito 1 -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button" data-bs-toggle="collapse" data-bs-target="#delito1">
+                            1. Acceso ilícito a sistemas informáticos 💻🔓
+                        </button>
+                    </h2>
+                    <div id="delito1" class="accordion-collapse collapse">
+                        <div class="accordion-body">
+                            <p><strong>Definición:</strong> Entrar sin permiso a sistemas, cuentas, redes o aplicaciones.</p>
+                            <h6>Ejemplos:</h6>
+                            <ul>
+                                <li>Hackear cuentas</li>
+                                <li>Entrar sin autorización</li>
+                                <li>Ver información restringida</li>
+                                <li>Acceder a Wi-Fi privada</li>
+                            </ul>
+
+                            <h6>Pena:</h6>
+                            <ul>
+                                <li>1 a 4 años</li>
+                                <li>3 a 6 si se rompen medidas de seguridad</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Delito 2 -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#delito2">
+                            2. Atentado a la integridad de datos informáticos 🧾💥
+                        </button>
+                    </h2>
+                    <div id="delito2" class="accordion-collapse collapse">
+                        <div class="accordion-body">
+                            <p>Daño, borrado o modificación de datos sin permiso.</p>
+                            <h6>Ejemplos:</h6>
+                            <ul>
+                                <li>Modificar notas</li>
+                                <li>Borrar bases de datos</li>
+                                <li>Cifrar archivos (ransomware)</li>
+                            </ul>
+
+                            <p><strong>Pena:</strong> 3 a 6 años de prisión.</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ESCENARIOS -->
+        <section class="mb-5 section-card">
+            <h2 class="fw-bold mb-4">Escenarios de Ciberdelitos y Qué Hacer</h2>
+
+            <div class="row">
+
+                <div class="col-md-6 mb-3">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-body">
+                            <h5 class="fw-bold">Estafa digital en compras online 🛒💸</h5>
+                            <h6>Pasos:</h6>
+                            <ul>
+                                <li>Dejar de enviar dinero</li>
+                                <li>Guardar capturas</li>
+                                <li>Llamar al banco</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-body">
+                            <h5 class="fw-bold">Robo de cuenta de WhatsApp 📲🔑</h5>
+                            <h6>Pasos:</h6>
+                            <ul>
+                                <li>Intentar recuperar</li>
+                                <li>Avisar a contactos</li>
+                                <li>Activar 2FA</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ENTIDADES -->
+        <section class="mb-5 section-card">
+            <h2 class="fw-bold mb-4">Entidades oficiales y contactos</h2>
+
+            <div class="list-group">
+                <div class="list-group-item">
+                    <h5 class="fw-bold">DIVINDAT – PNP</h5>
+                    <ul>
+                        <li>Av. España 323 – Lima</li>
+                        <li>Tel: (01) 431-8898</li>
+                        <li>Email: divindat.depcpi@policia.gob.pe</li>
+                    </ul>
+                </div>
+
+                <div class="list-group-item">
+                    <h5 class="fw-bold">UFEC – Fiscalía</h5>
+                    <ul>
+                        <li>Tel: (01) 625-5555</li>
+                        <li>0-800-00-205</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- GLOSARIO -->
+        <section class="mb-5 section-card">
+            <h2 class="fw-bold mb-3">Glosario</h2>
+            <ul>
+                <li><strong>Phishing:</strong> Enlaces falsos.</li>
+                <li><strong>Smishing:</strong> SMS falsos.</li>
+                <li><strong>Carding:</strong> Robo de tarjeta.</li>
+                <li><strong>Sniffing:</strong> Robo en Wi-Fi públicas.</li>
+            </ul>
+        </section>
+
+    </div>
+	<div th:replace="~{footer}"></div>
+
+    <!-- SCRIPTS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- CHATBOT -->
+    <script type="text/javascript">
+      (function(d, t) {
+          var v = d.createElement(t), s = d.getElementsByTagName(t)[0];
+          v.onload = function() {
+            window.voiceflow.chat.load({
+              verify: { projectID: '692d2b60bdd0465c265d502f' },
+              url: 'https://general-runtime.voiceflow.com/',
+              versionID: 'production',
+              voice: { url: "https://runtime-api.voiceflow.com/" }
+            });
+          }
+          v.src = "https://cdn.voiceflow.com/widget-next/bundle.mjs";
+          v.type = "text/javascript";
+          s.parentNode.insertBefore(v, s);
+      })(document, 'script');
+    </script>
+
+</body>
+</html>

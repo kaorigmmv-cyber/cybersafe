@@ -4,11 +4,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import proyecto.dao.MedioEstafaRepository;
-import proyecto.dao.ModalidadEstafaRepository;
 import proyecto.entity.MedioEstafa;
-import proyecto.entity.ModalidadEstafa;
 
 @Service
 public class MedioEstafaServices {
@@ -20,4 +17,8 @@ public class MedioEstafaServices {
 	public List<MedioEstafa> listaMedioEstafas(){
 		return medEstRepo.findAll();
 	}
+	
+    public MedioEstafa obtenerPorId(Integer id) {
+        return medEstRepo.findById(id).orElse(null);
+    }
 }

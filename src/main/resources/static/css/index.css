@@ -1,0 +1,497 @@
+:root {
+    --hero-bg: #00466b;
+    --hero-text: #ffffff;
+    --accent-yellow: #ffdd2d;
+    --accent-yellow-hover: #ffd019;
+    --dot-active: #ffdd2d;
+}
+
+body {
+    margin: 0;
+}
+
+/* =========================
+   CARRUSEL (TAL CUAL TUYO)
+   ========================= */
+.hero-carrusel {
+    position: relative;
+    width: 100%;
+    min-height: 500px;
+    background: var(--hero-bg);
+    color: var(--hero-text);
+    overflow: hidden;
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+    padding: 2.5rem 1.5rem 0;
+    box-sizing: border-box;
+    margin: 0 !important;
+    border: 0;
+}
+
+.carrusel-track-wrapper {
+    width: 100%;
+    max-width: 1200px;
+    overflow: hidden;
+    position: relative;
+}
+
+.carrusel-track {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+    height: 100%;
+}
+
+.carrusel-slide {
+    flex: 0 0 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+    height: 100%;
+}
+
+.slide-content {
+    height: 100%;
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 2rem;
+    align-items: center;
+}
+
+.slide-text h1 {
+    font-size: 2.4rem;
+    line-height: 1.15;
+    font-weight: 800;
+    margin: 0 0 1rem 0;
+    text-transform: uppercase;
+}
+
+.slide-description {
+    font-size: 1rem;
+    line-height: 1.6;
+    max-width: 420px;
+    margin-bottom: 1.5rem;
+}
+
+.slide-footnote {
+    font-size: 0.85rem;
+    opacity: 0.85;
+    margin-top: 0.9rem;
+}
+
+/* BOTÓN AMARILLO SOLO PARA EL HERO */
+.hero-btn-primary {
+    display: inline-block;
+    background: var(--accent-yellow);
+    color: #222;
+    font-weight: 700;
+    padding: 0.9rem 1.8rem;
+    border-radius: 0.4rem;
+    text-decoration: none;
+    border: none;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.35);
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+    position: relative;
+    z-index: 2;
+}
+
+.hero-btn-primary:hover {
+    background: var(--accent-yellow-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.45);
+}
+
+.slide-image {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    align-self: stretch;
+}
+
+.slide-image img {
+    max-width: 100%;
+    max-height: 100%;
+    height: auto;
+    border-radius: 0.6rem;
+    box-shadow: none;
+    object-fit: contain;
+    display: block;
+}
+
+/* ==========================================
+   FLECHAS — YA NO DESAPARECEN
+   ========================================== */
+.carrusel-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    border-radius: 999px;
+    width: 3rem;
+    height: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.7rem;
+    cursor: pointer;
+    transition: background 0.15s ease, transform 0.15s ease;
+    z-index: 20; 
+}
+
+.carrusel-arrow:hover {
+    background: rgba(255, 255, 255, 0.18);
+    transform: translateY(-50%) scale(1.08);
+}
+
+/* Flechas visibles SIEMPRE (posición respecto al SECTION completo) */
+.arrow-left {
+    left: 1rem;
+}
+
+.arrow-right {
+    right: 1rem;
+}
+
+/* En pantallas grandes, las separamos un poco más */
+@media (min-width: 1400px) {
+    .arrow-left {
+        left: 2rem;
+    }
+    .arrow-right {
+        right: 2rem;
+    }
+}
+
+/* En pantallas pequeñas, las acercamos */
+@media (max-width: 890px) {
+    .arrow-left {
+        left: 0.5rem;
+    }
+    .arrow-right {
+        right: 0.5rem;
+    }			
+    .slide-image {
+        display: none !important;
+    }
+}
+
+/* ==========================================
+   PUNTOS
+   ========================================== */
+.carrusel-dots {
+    position: absolute;
+    bottom: 0.9rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 0.6rem;
+}
+
+.carrusel-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.45);
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    transition: transform 0.15s ease, background 0.15s ease;
+}
+
+.carrusel-dot.active {
+    background: var(--dot-active);
+    transform: scale(1.2);
+}
+
+/* ==========================================
+   RESPONSIVE CARRUSEL
+   ========================================== */
+@media (max-width: 900px) {
+    .slide-content {
+        grid-template-columns: 1fr;
+        text-align: left;
+    }
+
+    .slide-image {
+        order: -1;
+    }
+}
+
+@media (max-width: 640px) {
+    .hero-carrusel {
+        padding: 2rem 1.1rem 0;
+        min-height: 440px;
+    }
+
+    .slide-content {
+        gap: 1.4rem;
+    }
+
+    .slide-text h1 {
+        font-size: 1.8rem;
+    }
+
+    .slide-description {
+        font-size: 0.95rem;
+    }
+
+    .carrusel-arrow {
+        width: 2.2rem;
+        height: 2.2rem;
+        font-size: 1.3rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .slide-text h1 {
+        font-size: 1.6rem;
+    }
+
+    .slide-image img {
+        max-width: 90%;
+    }
+}
+
+/* ==========================================
+   A PARTIR DE AQUÍ, SOLO OTRAS SECCIONES
+   (NO TOCAN EL CARRUSEL)
+   ========================================== */
+
+/* === ACCESOS RÁPIDOS === */
+.quick-access-section {
+    background: #ffffff;
+}
+
+.qa-card {
+    display: block;
+    background: #fff;
+    border-radius: 18px;
+    padding: 1.5rem 1.2rem;
+    text-decoration: none;
+    color: #222;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    height: 100%;
+}
+
+.qa-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 26px rgba(0,0,0,0.08);
+}
+
+.qa-title {
+    font-weight: 700;
+    font-size: 0.95rem;
+}
+
+.qa-text {
+    margin-top: 0.25rem;
+    font-size: 0.85rem;
+    color: #555;
+}
+
+/* === QUIÉNES SOMOS === */
+.about-section {
+    width: 100%;
+    background: #003b72;       /* azul oscuro del boceto */
+    color: #fff;
+}
+
+.about-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 0;
+}
+
+.about-text {
+    padding: 3rem 3.5rem;
+}
+
+.about-text h2 {
+    font-weight: 800;
+    font-size: 1.9rem;
+    margin-bottom: 1rem;
+}
+
+.about-text p {
+    font-size: 1rem;
+    margin-bottom: 1rem;
+}
+
+.about-text ul {
+    padding-left: 1.2rem;
+    margin-bottom: 0;
+}
+
+.about-text li {
+    margin-bottom: 0.35rem;
+    font-size: 0.95rem;
+}
+
+.about-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* === NUESTROS OBJETIVOS === */
+.objetivos-section {
+    background: #f5f7fb;
+    padding: 3rem 0 3.5rem;
+}
+
+.objetivos-title {
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    font-size: 1.6rem;
+}
+
+.objetivo-card {
+    background: #fff;
+    border-radius: 20px;
+    padding: 2rem 1.5rem 1.8rem;
+    box-shadow: 0 10px 24px rgba(0,0,0,0.06);
+    height: 100%;
+}
+
+.objetivo-icon {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    margin: 0 auto 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(circle at 30% 30%, #ffffff, #e4f0ff);
+    color: #003b72;
+    font-size: 2rem;
+}
+
+.objetivo-card h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+}
+
+.objetivo-card p {
+    font-size: 0.9rem;
+    color: #555;
+}
+
+/* === HAZTE PREMIUM === */
+.premium-section {
+    padding: 3.5rem 0 4rem;
+    background: linear-gradient(180deg, #ffffff 0%, #f4f7ff 100%);
+}
+
+.premium-header h2 {
+    font-weight: 800;
+    margin-top: 0.5rem;
+}
+
+.premium-header p {
+    max-width: 540px;
+    margin: 0.5rem auto 0;
+    color: #555;
+}
+
+.premium-badge {
+    display: inline-block;
+    padding: 0.2rem 0.8rem;
+    border-radius: 999px;
+    background: rgba(255,179,71,0.18);
+    color: #c27b1a;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+.pricing-card {
+    background: #fff;
+    border-radius: 24px;
+    box-shadow: 0 18px 40px rgba(0,0,0,0.08);
+    padding: 2rem 2rem 2.4rem;
+}
+
+.pricing-header h3 {
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+}
+
+.pricing-header p {
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.pricing-features {
+    list-style: none;
+    padding-left: 0;
+    margin: 1.2rem 0 1.5rem;
+}
+
+.pricing-features li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    margin-bottom: 0.6rem;
+    color: #444;
+}
+
+.pricing-features i {
+    color: #27ae60;
+    margin-top: 0.1rem;
+}
+
+.pricing-footer {
+    border-top: 1px solid #eee;
+    padding-top: 1.2rem;
+}
+
+.price-tag {
+    display: flex;
+    align-items: baseline;
+    gap: 0.25rem;
+    margin-bottom: 0.8rem;
+}
+
+.price-amount {
+    font-size: 1.7rem;
+    font-weight: 800;
+    color: #003b72;
+}
+
+.price-period {
+    font-size: 0.9rem;
+    color: #777;
+}
+
+.btn-premium {
+    border-radius: 999px;
+    background: #ffb347;
+    border: none;
+    font-weight: 700;
+    box-shadow: 0 10px 24px rgba(255,179,71,0.6);
+}
+
+.btn-premium:hover {
+    background: #ffc463;
+}
+
+
+
+/* === RESPONSIVE SOLO PARA QUIÉNES SOMOS === */
+@media (max-width: 992px) {
+    .about-wrapper {
+        grid-template-columns: 1fr;
+    }
+
+    .about-text {
+        padding: 2.5rem 1.5rem;
+        text-align: left;
+    }
+}

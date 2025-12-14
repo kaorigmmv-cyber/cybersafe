@@ -4,144 +4,312 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cybersafe - Centro de Información</title>
+
+    <!-- BOOTSTRAP -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 
-    <style>
-        /* Fondo degradado del header */
-        header {
-            background: linear-gradient(135deg, #006eff, #002b7a);
-            background-size: cover;
-            background-position: center;
-            color: white;
-        }
-
-        /* Cards animadas */
-        .quick-access a {
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-
-        .quick-access a:hover {
-            transform: translateY(-5px);
-            box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
-        }
-
-        /* Botón flotante */
-        #chatToggle {
-            box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.3);
-        }
-
-        /* Footer degradado */
-        footer {
-            background: linear-gradient(90deg, #000, #222);
-        }
-
-        /* Texto del header */
-        .hero-title {
-            font-size: 3rem;
-            font-weight: 800;
-        }
-    </style>
+    <!-- CSS -->
+    <link rel="stylesheet" href="/css/index.css">
 </head>
 <body class="bg-light">
 
-    <!-- NAVBAR -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm sticky-top">
-        <div class="container">
-            <a class="navbar-brand fw-bold" href="/dev/index">🛡️ CiberSafe</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto align-items-center">
-                    <li class="nav-item"><a class="nav-link" href="#">Documentos</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Reportes</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/dev/listado">Casos</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Denuncias</a></li>
-					<li class="nav-item ms-3"><a href="/dev/registrarse" class="btn btn-primary btn-sm">Registrarse</a></li>
-					<li class="nav-item ms-2"><a data-bs-toggle="modal" data-bs-target="#loginModal" class="btn btn-success btn-sm">Login</a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+<!-- NAVBAR -->
+<div th:replace="~{navbar}"></div>
 
-    <!-- HEADER -->
-    <header class="text-center py-5">
-        <div class="container py-4">
-            <h1 class="hero-title mb-3">CENTRO DE INFORMACIÓN Y CONSULTAS <span class="text-warning">CYBERSAFE</span></h1>
-            <p class="lead mb-0">Consulta documentación, aprende a denunciar y reporta actividades maliciosas para ayudar a los demás.</p>
-        </div>
-    </header>
-
-    <!-- ACCESOS RÁPIDOS -->
-    <section class="container quick-access py-5">
-        <div class="row g-4 text-center">
-            <div class="col-md-3">
-                <a href="#" class="btn btn-primary w-100 py-4 rounded-4 shadow-sm">
-                    <i class="bi bi-journal-text fs-1"></i>
-                    <div class="fw-bold mt-2">Revisa documentación</div>
-                </a>
-            </div>
-            <div class="col-md-3">
-                <a href="#" class="btn btn-success w-100 py-4 rounded-4 shadow-sm">
-                    <i class="bi bi-bar-chart-line fs-1"></i>
-                    <div class="fw-bold mt-2">Reportes Estadísticos</div>
-                </a>
-            </div>
-            <div class="col-md-3">
-                <a href="/dev/listado" class="btn btn-warning w-100 py-4 rounded-4 shadow-sm">
-                    <i class="bi bi-people fs-1"></i>
-                    <div class="fw-bold mt-2">Consulta y registra casos</div>
-                </a>
-            </div>
-            <div class="col-md-3">
-                <a href="#" class="btn btn-danger w-100 py-4 rounded-4 shadow-sm">
-                    <i class="bi bi-shield-lock fs-1"></i>
-                    <div class="fw-bold mt-2">Denuncia por medios oficiales</div>
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <!-- BOTÓN FLOTANTE -->
-    <button id="chatToggle" class="btn btn-primary rounded-circle position-fixed"
-        style="bottom: 20px; right: 20px; width: 60px; height: 60px;">
-        <i class="bi bi-chat-dots fs-4"></i>
+<!-- HERO CARRUSEL -->
+<section class="hero-carrusel" id="heroCarrusel">
+    <!-- Flecha izquierda -->
+    <button class="carrusel-arrow arrow-left" aria-label="Slide anterior">
+        &#10094;
     </button>
 
-    <!-- FOOTER -->
-    <footer class="text-white text-center py-3 mt-5">
-        <small>© 2025 Centro Virtual de Ciberdelincuencia | Todos los derechos reservados</small>
-    </footer>
-	
-	<!-- Modal de Inicio de Sesión -->
-	<div class="modal fade" id="loginModal" tabindex="-1">
-	  <div class="modal-dialog modal-dialog-centered">
-	    <div class="modal-content rounded-4 shadow">
-	      <div class="modal-header border-0">
-	        <h5 class="modal-title text-primary"><i class="bi bi-person-lock"></i> Iniciar sesión</h5>
-	        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-	      </div>
-	      <div class="modal-body">
-	        <form>
-	          <div class="mb-3">
-	            <label class="form-label">Usuario</label>
-	            <input type="email" class="form-control" required>
-	          </div>
-	          <div class="mb-3">
-	            <label class="form-label">Contraseña</label>
-	            <input type="password" class="form-control" required>
-	          </div>
-	          <button type="submit" class="btn btn-primary w-100">Ingresar</button>
-	        </form>
-	      </div>
-	      <div class="modal-footer border-0 text-center">
-	        <small>¿No tienes cuenta? <a href="/dev/registrarse" class="text-primary fw-bold">Regístrate</a></small>
-	      </div>
-	    </div>
-	  </div>
-	</div>
+    <!-- Contenedor de slides -->
+    <div class="carrusel-track-wrapper">
+        <div class="carrusel-track">
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+            <!-- SLIDE 1 -->
+            <article class="carrusel-slide active">
+                <div class="slide-content">
+                    <div class="slide-text">
+                        <h1>
+                            DENUNCIA<br>
+                            Y PREVIENE LOS<br>
+                            CIBERDELITOS EN PERÚ
+                        </h1>
+                        <p class="slide-description">
+                            Reporta casos, consulta estadísticas y aprende cómo protegerte en el mundo digital.
+                        </p>
+                        <a sec:authorize="hasAnyRole('Usuario', 'Premium')" href="/est/registrarCiberdelito" class="hero-btn-primary">
+                            Registrar una denuncia
+                        </a>
+                        <p class="slide-footnote">
+                            Tu reporte será enviado por correo a la DIVINDAT.
+                        </p>
+                    </div>
+                    <div class="slide-image">
+                        <img src="/img/chico_denuncia.png"
+                             alt="Persona usando una computadora para denunciar ciberdelitos">
+                    </div>
+                </div>
+            </article>
+
+            <!-- SLIDE 2 -->
+            <article class="carrusel-slide">
+                <div class="slide-content">
+                    <div class="slide-text">
+                        <h1>
+                            INFÓRMATE<br>
+                            SOBRE LOS<br>
+                            DELITOS INFORMÁTICOS
+                        </h1>
+                        <p class="slide-description">
+                            Accede a un centro informativo con definiciones, ejemplos y noticias actualizadas sobre
+                            ciberdelitos.
+                        </p>
+                        <a href="/informacion/ciberseguridad" class="hero-btn-primary">
+                            Explorar información
+                        </a>
+                        <p class="slide-footnote">
+                            Actualizaciones semanales y artículos seleccionados.
+                        </p>
+                    </div>
+                    <div class="slide-image">
+                        <img src="/img/chico_noticias.png" alt="Ilustración sobre ciberseguridad">
+                    </div>
+                </div>
+            </article>
+
+            <!-- SLIDE 3 -->
+            <article class="carrusel-slide">
+                <div class="slide-content">
+                    <div class="slide-text">
+                        <h1>
+                            CONSULTA<br>
+                            ESTADÍSTICAS<br>
+                            EN TIEMPO REAL
+                        </h1>
+                        <p class="slide-description">
+                            Visualiza estadísticas de ciberdelitos por año, tipo y región en todo el Perú.
+                        </p>
+                        <a href="/dev/estadisticas" class="hero-btn-primary">
+                            Ver estadísticas
+                        </a>
+                        <p class="slide-footnote">
+                            Datos a partir de reportes ciudadanos y registros oficiales.
+                        </p>
+                    </div>
+
+					<div class="slide-image">
+					    <img src="/img/chico_estadisticas.png" alt="Gráficos de estadísticas de ciberdelitos">
+					</div>
+                </div>
+            </article>
+
+            <!-- SLIDE 4 -->
+            <article class="carrusel-slide">
+                <div class="slide-content">
+                    <div class="slide-text">
+                        <h1>
+                            APRENDE A<br>
+                            DENUNCIAR POR<br>
+                            MEDIOS OFICIALES
+                        </h1>
+                        <p class="slide-description">
+                            Conoce paso a paso cómo realizar una denuncia oficial ante las autoridades competentes.
+                        </p>
+                        <a href="/dev/guias" class="hero-btn-primary">
+                            Cómo denunciar
+                        </a>
+                        <p class="slide-footnote">
+                            Información validada según los canales oficiales.
+                        </p>
+                    </div>
+                    <div class="slide-image">
+                        <img src="/img/chico_comodenunciar.png"
+                             alt="Persona aprendiendo cómo denunciar por medios oficiales">
+                    </div>
+                </div>
+            </article>
+
+        </div>
+    </div>
+
+    <!-- Flecha derecha -->
+    <button class="carrusel-arrow arrow-right" aria-label="Slide siguiente">
+        &#10095;
+    </button>
+
+    <!-- Puntos dinámicos -->
+    <div class="carrusel-dots"></div>
+</section>
+
+<!-- ACCESOS RÁPIDOS -->
+<section class="quick-access-section py-5">
+    <div class="container">
+        <div class="row g-4 text-center">
+            <div class="col-md-3">
+                <a href="/dev/informacionTipos" class="qa-card">
+                    <i class="bi bi-journal-text fs-1"></i>
+                    <div class="qa-title mt-2">Ver información sobre ciberdelitos</div>
+                    <p class="qa-text">Guías, consejos y tipos de fraude.</p>
+                </a>
+            </div>
+            <div class="col-md-3">
+                <a href="/dev/estadisticas" class="qa-card">
+                    <i class="bi bi-bar-chart-line fs-1"></i>
+                    <div class="qa-title mt-2">Ver estadísticas nacionales</div>
+                    <p class="qa-text">Casos por año, región y subgénero.</p>
+                </a>
+            </div>
+            <div class="col-md-3">
+                <a href="/est/listado" class="qa-card">
+                    <i class="bi bi-file-earmark-text fs-1"></i>
+                    <div class="qa-title mt-2">Registrar y consultar casos</div>
+                    <p class="qa-text">Sube tu reporte y revisa denuncias públicas.</p>
+                </a>
+            </div>
+            <div class="col-md-3">
+                <a href="/dev/guias" class="qa-card">
+                    <i class="bi bi-shield-lock fs-1"></i>
+                    <div class="qa-title mt-2">Denuncia por medios oficiales</div>
+                    <p class="qa-text">Envía tu denuncia directamente a DIVINDAT.</p>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- QUIÉNES SOMOS (full width) -->
+<section class="about-section">
+    <div class="about-wrapper">
+        <div class="about-text">
+            <h2>¿QUIÉNES SOMOS?</h2>
+            <p>
+                Somos una plataforma diseñada para facilitar la denuncia, prevención y
+                análisis de ciberdelitos en Perú.
+            </p>
+            <ul>
+                <li>Centralizamos reportes ciudadanos de forma segura.</li>
+                <li>Conectamos a la ciudadanía con canales oficiales de denuncia.</li>
+                <li>Generamos estadísticas para apoyar la toma de decisiones.</li>
+            </ul>
+        </div>
+        <div class="about-image">
+            <!-- Usa la imagen que tengas (la del mockup de 3 personas, por ejemplo) -->
+            <img src="/img/quienes_somos.jpg" alt="Equipo Cybersafe">
+        </div>
+    </div>
+</section>
+
+<!-- NUESTROS OBJETIVOS (full width) -->
+<section class="objetivos-section">
+    <div class="container text-center">
+        <h2 class="objetivos-title">NUESTROS OBJETIVOS</h2>
+
+        <div class="row mt-4 g-4">
+            <!-- Objetivo 1 -->
+            <div class="col-md-4">
+                <div class="objetivo-card">
+                    <div class="objetivo-icon">
+                        <i class="bi bi-megaphone"></i>
+                    </div>
+                    <h3>Facilitar la denuncia ciudadana</h3>
+                    <p>
+                        Hacemos simple y rápido reportar un caso de ciberdelito.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Objetivo 2 -->
+            <div class="col-md-4">
+                <div class="objetivo-card">
+                    <div class="objetivo-icon">
+                        <i class="bi bi-graph-up-arrow"></i>
+                    </div>
+                    <h3>Promover la transparencia</h3>
+                    <p>
+                        Brindamos estadísticas claras para que todos conozcan
+                        la situación real en el país.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Objetivo 3 -->
+            <div class="col-md-4">
+                <div class="objetivo-card">
+                    <div class="objetivo-icon">
+                        <i class="bi bi-shield-check"></i>
+                    </div>
+                    <h3>Fomentar la educación digital</h3>
+                    <p>
+                        Ayudamos a que las personas se protejan e identifiquen
+                        peligros online.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- HAZTE PREMIUM (full width mejorado) -->
+<section sec:authorize="!hasAnyRole('Premium', 'PremiumPlus', 'Moderador')" class="premium-section" id="premium">
+    <div class="container">
+        <div class="premium-header text-center">
+            <span class="premium-badge">Nuevo</span>
+            <h2>¡Hazte Premium!</h2>
+            <p>
+                Envía más casos a la DIVINDAT, desbloquea acceso completo a todos los casos y
+                obtén herramientas avanzadas de análisis.
+            </p>
+        </div>
+
+        <div  class="row justify-content-center mt-4">
+            <div class="col-lg-6">
+                <div class="pricing-card">
+                    <div class="pricing-header">
+                        <h3>Plan Premium</h3>
+                        <p>Acceso completo a todas las funciones y casos disponibles.</p>
+                    </div>
+
+                    <ul class="pricing-features">
+                        <li>
+                            <i class="bi bi-check-circle-fill"></i>
+                            Hasta 5 oportunidades sin límite de tiempo para enviar casos a la DIVINDAT.
+                        </li>
+                        <li>
+                            <i class="bi bi-check-circle-fill"></i>
+                            Ver todos los casos sin límite.
+                        </li>
+                        <li>
+                            <i class="bi bi-check-circle-fill"></i>
+                            Filtros avanzados de búsqueda e informes descargables.
+                        </li>
+                        <li>
+                            <i class="bi bi-check-circle-fill"></i>
+                            Acceso a todas las estadísticas detalladas del sistema.
+                        </li>
+                    </ul>
+
+                    <div  class="pricing-footer">
+                        <div class="price-tag">
+                            <span class="price-amount">S/ 10.00</span>
+                            <span class="price-period">/mes</span>
+                        </div>
+                        <a href="/dev/premium" class="btn btn-premium w-100">
+                            Activar Plan Premium
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div th:replace="~{footer}"></div>
+<!-- SCRIPTS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/js/index.js"></script>
+<script src="/js/chatbotIA.js"></script>
 </body>
 </html>

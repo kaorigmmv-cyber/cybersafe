@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${noticia.titulo} + ' | CIBERSAFE'"></title>
+
+<style>
+    /* Estilos básicos de ejemplo para la plantilla CIBERSAFE */
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f4f4f4;
+        color: #333;
+        margin: 0;
+        padding: 0;
+    }
+
+    .noticia-container {
+        max-width: 1200px; /* Ancho de la página */
+        margin: 30px auto;
+        padding: 30px;
+        background: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+        display: flex;
+        flex-direction: row;
+        gap: 30px;
+    }
+
+    /* Estilo para la columna de la noticia */
+    .noticia-main {
+        flex: 2;
+    }
+
+    h1 {
+        color: #003366;
+        border-bottom: 3px solid #003366;
+        padding-bottom: 12px;
+        font-size: 2.5em;
+    }
+
+    .meta-info {
+        display: flex;
+        justify-content: space-between;
+        font-size: 1em;
+        color: #777;
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #eee;
+    }
+
+    .my-3 img {
+        width: 100%;
+        height: auto;
+        border-radius: 8px;
+        object-fit: cover;
+        margin-bottom: 25px;
+        max-height: 400px;
+    }
+
+    article.contenido-principal {
+        font-size: 1.1em;
+        line-height: 1.6;
+        color: #444;
+    }
+
+    .referencias {
+        margin-top: 30px;
+        padding: 20px;
+        border-left: 5px solid #007bff;
+        background-color: #f8f9fa;
+    }
+
+    .referencias h3 {
+        color: #007bff;
+        margin-bottom: 15px;
+    }
+
+    .referencias ul {
+        list-style-type: disc;
+        padding-left: 20px;
+    }
+
+    .referencias li {
+        margin-bottom: 8px;
+        color: #555;
+    }
+
+    /* Estilo para la columna de noticias recomendadas */
+    .noticias-recomendadas {
+        flex: 1;
+        background: #f7f7f7;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 6px 12px rgba(0,0,0,0.05);
+    }
+
+    .noticias-recomendadas h3 {
+        color: #003366;
+        margin-bottom: 15px;
+    }
+
+    .noticias-recomendadas ul {
+        padding-left: 0;
+        list-style: none;
+    }
+
+    /* Contenedor principal de cada noticia (li) */
+    .noticias-recomendadas li {
+        margin-bottom: 20px;
+        font-size: 1em;
+        padding-bottom: 20px;
+        border-bottom: 1px solid #eee;
+    }
+    
+    /* Contenedor Flex: Imagen (izquierda) | Contenido de texto (derecha) */
+    .noticia-recomendada {
+        display: flex;
+        gap: 10px; /* Espacio entre la imagen y el texto */
+        align-items: flex-start;
+        width: 100%;
+    }
+
+    /* Estilos de la Imagen */
+    .noticia-recomendada .portada {
+        flex-shrink: 0; /* Asegura que la imagen no se encoja */
+        width: 100px; 
+        height: 80px;
+    }
+
+    .noticia-recomendada .portada img {
+        width: 100%; 
+        height: 100%;
+        object-fit: cover;
+        border-radius: 6px;
+    }
+
+    /* Contenedor Flex Columna: Título (arriba) | Descripción (abajo) */
+    .contenido-texto { /* NUEVO SELECTOR */
+        display: flex;
+        flex-direction: column; 
+        width: 100%;
+    }
+
+    /* Título */
+    .noticia-recomendada .titulo {
+        font-size: 1.1em;
+        color: #003366;
+        font-weight: bold;
+        margin-bottom: 5px; /* Espacio entre título y descripción */
+    }
+
+    .noticia-recomendada .titulo a {
+        color: #003366;
+        font-weight: bold;
+        text-decoration: none;
+    }
+
+    .noticia-recomendada .titulo a:hover {
+        color: #ffd700;
+    }
+    
+    /* Descripción con truncamiento */
+    .noticia-recomendada .descripcion {
+        font-size: 0.9em;
+        color: #555;
+        width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 2; /* Limitar a 2 líneas */
+        -webkit-box-orient: vertical;
+    }
+
+
+</style>
+</head>
+<body>
+	<div th:replace="~{navbar}"></div>
+    <div class="noticia-container">
+        <!-- Columna principal con la noticia -->
+        <div class="noticia-main">
+            <h1 th:text="${noticia.titulo}">Título de la Noticia CIBERSAFE</h1>
+
+            <div class="meta-info">
+                <span th:text="${'Autor: ' + noticia.autor}">Autor</span>
+                <span th:text="${'Publicado el: ' + #temporals.format(noticia.fechaPublicacion, 'dd MMMM yyyy')}">Fecha de Publicación</span>
+            </div>
+
+            <div class="my-3">
+                <img th:if="${noticia.portadaPath != null}"
+                     th:src="@{${noticia.portadaPath}}"
+                     class="img-fluid rounded">
+            </div>
+
+            <article class="contenido-principal">
+                <div th:utext="${noticia.contenido}">
+                    <p>Aquí se cargará el contenido detallado de la noticia. Se utiliza `th:utext` para permitir formato HTML como párrafos y listas.</p>
+                </div>
+            </article>
+
+			<section th:if="${noticia.referencias != null and !noticia.referencias.isEmpty()}" class="referencias">
+			    <h3>Fuentes y Referencias</h3>
+			    <ul>
+			        <li th:each="ref : ${#strings.arraySplit(noticia.referencias, '.')}" 
+			            th:if="${!#strings.isEmpty(ref)}"
+			            th:text="${#strings.trim(ref) + '.'}"></li>
+			    </ul>
+			</section>
+        </div>
+
+		<!-- Columna de noticias recomendadas -->
+		<div class="noticias-recomendadas">
+		    <h3>Noticias Recomendadas</h3>
+		    <ul>
+				<li th:each="n : ${recomendadas}">
+				    <div class="noticia-recomendada">
+				        <div class="portada">
+				            <img th:if="${n.portadaPath != null}"
+				                 th:src="@{${n.portadaPath}}"
+				                 alt="Imagen portada"
+				                 class="img-fluid rounded">
+				        </div>
+
+				        <div class="contenido-texto">
+				            <div class="titulo">
+				                <a th:if="${n.urlNoticia == null}" 
+				                   th:href="@{'/dev/noticias/ver/' + ${n.id}}"
+				                   th:text="${n.titulo}">
+				                    Título noticia interna
+				                </a>
+				                <a th:if="${n.urlNoticia != null}" 
+				                   th:href="${n.urlNoticia}" 
+				                   target="_blank" rel="noopener"
+				                   th:text="${n.titulo}">
+				                    Título noticia externa
+				                </a>
+				            </div>
+
+				            <div class="descripcion">
+				                <p th:text="${n.resumen}">Descripción breve de la noticia...</p>
+				            </div>
+				        </div>
+				        </div>
+				</li>
+		    </ul>
+		</div>
+    </div>
+
+<div th:replace="~{footer}"></div>
+<script src="/js/chatbotIA.js"></script>
+</body>
+</html>
