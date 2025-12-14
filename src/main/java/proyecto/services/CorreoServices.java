@@ -20,7 +20,7 @@ public class CorreoServices {
         mensaje.setTo(destino);
         mensaje.setSubject("Confirmación de Cuenta");
         mensaje.setText("Haz clic en el siguiente enlace para confirmar tu cuenta: "
-                + "http://localhost:8080/user/confirmar?token=" + token);
+                + "https://cybersafe-xmnh.onrender.com/user/confirmar?token=" + token);
 
         mailSender.send(mensaje);
         System.out.println("Correo enviado a " + destino);
