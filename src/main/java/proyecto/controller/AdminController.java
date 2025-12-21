@@ -17,35 +17,35 @@ import proyecto.services.ModalidadEstafaServices;
 @RequestMapping("dev")
 public class AdminController {
 
-	@Autowired
-	private EstafaServices estafaServices;
-	
-	@Autowired
-	private ModalidadEstafaServices modEstServices;
+    @Autowired
+    private EstafaServices estafaServices;
 
-	@Autowired
-	private MedioEstafaServices medEstServices;
-	
-	@GetMapping("index")
-	public String index() {
-		return "index";
-	}
-	
-	@GetMapping("guias")
-	public String denuncia() {
-		return "denuncia";
-	}
+    @Autowired
+    private ModalidadEstafaServices modEstServices;
 
-	@GetMapping("premium")
-	public String premium() {
-		return "premium";
-	}
-	
+    @Autowired
+    private MedioEstafaServices medEstServices;
+
+    @GetMapping("index")
+    public String index() {
+        return "index";
+    }
+
+    @GetMapping("guias")
+    public String denuncia() {
+        return "denuncia";
+    }
+
+    @GetMapping("premium")
+    public String premium() {
+        return "premium";
+    }
+
     // ===============================
     // ESTADÍSTICAS (CYBERSAFE + NACIONAL)
     // ===============================
 
-	// ===============================
+    // ===============================
     // ESTADÍSTICAS (CYBERSAFE + NACIONAL)
     // ===============================
 
@@ -62,6 +62,7 @@ public class AdminController {
         // Gráficos básicos
         model.addAttribute("estadisticasMedio", estafaServices.estadisticaPorMedio());
         model.addAttribute("estadisticasModalidad", estafaServices.estadisticaPorModalidad());
+        model.addAttribute("estadisticasImplicado", estafaServices.estadisticaPorImplicado());
 
         // Total del año actual
         model.addAttribute("totalAnio", estafaServices.totalPorAnio(anioActual));
@@ -90,18 +91,18 @@ public class AdminController {
     public List<Object[]> obtenerReportesPorMes(@RequestParam("anio") int anio) {
         return estafaServices.reportesPorMes(anio);
     }
-    
+
     //EN CASO DE INGRESAR A UNA VISTA A LO QUE NO TIENE EL ROL
     @GetMapping("/error/403")
     public String error403() {
         return "error/403";
     }
-    
+
     @GetMapping("/informacionTipos")
     public String mostrarInformacionTipos() {
         return "informacionTipos"; // El nombre del archivo sin la extensión .html
     }
-    
+
     @GetMapping("/tiposEstafa")
     public String mostrarTiposEstafa() {
         return "tiposEstafa"; // El nombre del archivo sin la extensión .html
