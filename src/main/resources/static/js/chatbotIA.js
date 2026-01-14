@@ -1,13 +1,13 @@
 
-  (function(d, t) {
+(function(d, t) {
       var v = d.createElement(t), s = d.getElementsByTagName(t)[0];
       v.onload = function() {
         window.voiceflow.chat.load({
-          verify: { projectID: '695dbc5470f90b5ddfd9dcdc' },
-          url: 'https://general-runtime.voiceflow.com',
+          verify: { projectID: '6966fdfb018e0ecf9503a11f' },
+          url: 'https://general-runtime.voiceflow.com/',
           versionID: 'production',
           voice: {
-            url: "https://runtime-api.voiceflow.com"
+            url: "https://runtime-api.voiceflow.com/"
           }
         });
       }
