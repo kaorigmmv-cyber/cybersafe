@@ -481,7 +481,7 @@
 
 		            // 2️⃣ Consultar API externa solo si el DNI no existe
 		            return fetch("https://apiperu.dev/api/dni/" + dniIngresado 
-		                + "?api_token=bbdef8f53da81a029eb1e342d0e4b447df6781cd8f7e1370032f3faeede79b7f")
+		                + "?api_token=32abd5864f2f741cb6d87574787183a518a1769ba78d03359d311623b6683808")
 		        })
 		        .then(res => res ? res.json() : null)
 		        .then(datos => {
